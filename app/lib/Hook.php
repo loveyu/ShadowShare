@@ -8,8 +8,26 @@
 namespace ULib;
 
 
-class Hook{
-	public function add() {
+use CLib\Router;
 
+class Hook{
+	private $hook;
+
+	function __construct(){
+		$this->hook = hook();
+	}
+
+	public function add(){
+		$this->router();
+	}
+
+	private function router(){
+		c_lib()->load('router');
+		$router = new Router();
+		$this->hook->add('UriInfo_process', [
+			$router,
+			'result'
+		]);
+		$router->add_preg("|^([0-9A-Za-z]{4,})$|",'Home/share/[1]');
 	}
 } 

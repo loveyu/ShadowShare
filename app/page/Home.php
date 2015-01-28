@@ -16,6 +16,11 @@ class Home extends Page{
 		echo URL_NOW;
 	}
 
+
+	public function share($id=null){
+		var_dump($id);
+	}
+
 	/**
 	 * 404
 	 */

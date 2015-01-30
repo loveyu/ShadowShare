@@ -19,6 +19,8 @@ class Hook{
 
 	public function add(){
 		$this->router();
+		l_h('system.php');
+		lib()->load('Page');
 	}
 
 	private function router(){

@@ -1,7 +1,7 @@
 <?php
 namespace UView;
 
-use Core\Page;
+use ULib\Page;
 
 class Home extends Page{
 
@@ -13,11 +13,11 @@ class Home extends Page{
 	 * Home page
 	 */
 	public function main(){
-		echo URL_NOW;
+		$this->__view("home/index.php");
 	}
 
 
-	public function share($id=null){
+	public function share($id = NULL){
 		var_dump($id);
 	}
 

@@ -38,9 +38,31 @@ function class_share($type){
 	if(!class_exists('ULib\Share')){
 		$lib->load('Share');
 	}
-	$lib->load('Share/Share'.$type);
-	$class_name = 'ULib\Share\Share'.$type;
-	$map[$type] = new $class_name();
-	$lib->add("UShare".$type, $map[$type]);
+	$map[$type] = $lib->using('UShare' . $type);
+	if($map[$type] === false){
+		$lib->load('Share/Share' . $type);
+		$class_name = 'ULib\Share\Share' . $type;
+		$map[$type] = new $class_name();
+		$lib->add("UShare" . $type, $map[$type]);
+	}
 	return $map[$type];
+}
+
+/**
+ * 获取用户类
+ * @return \ULib\Member
+ */
+function class_member(){
+	static $member = NULL;
+	if($member !== NULL){
+		return $member;
+	}
+	$lib = lib();
+	$member = $lib->using('UMember');
+	if($member === false){
+		$lib->load('Member');
+		$member = new \ULib\Member();
+		$lib->add("UMember", $member);
+	}
+	return $member;
 }

@@ -12,20 +12,30 @@ use ULib\RestApi;
 
 class Create extends RestApi{
 	public function __construct(){
-		parent::__construct(NULL, ['out' => 'dump']);
+		parent::__construct(NULL, ['method' => 'GET']);
 	}
 
 	public function url(){
+		if(!$this->_run_check()){
+			return;
+		}
 		$url = trim($this->__req->post('url'));
 		if(!filter_var($url, FILTER_VALIDATE_URL)){
 			$this->_set_status(false, 3001, "URL验证出错");
 			return;
 		}
 		$share = class_share('Url');
-		var_dump($share);
-		$this->_set_status(true,0);
-		$this->_set_data(['uname'=>'14f']);
+		if($share->create(class_member()->getUid())){
+			if($share->setData($url)){
+				$this->_set_status(true,0);
+				$this->_set_data($share->getUname());
+			}else{
 
+				$this->_set_status(false,3003,'分享数据设置失败');
+			}
+		}else{
+			$this->_set_status(false,3002,'创建分享失败');
+		}
 	}
 
 }

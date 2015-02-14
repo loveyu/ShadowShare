@@ -19,8 +19,8 @@ class Hook{
 
 	public function add(){
 		$this->router();
-		l_h('system.php');
-		lib()->load('Page');
+		l_h('system.php','ref_class.php');
+		lib()->load('Page','RestApi');
 	}
 
 	private function router(){
@@ -31,5 +31,6 @@ class Hook{
 			'result'
 		]);
 		$router->add_preg("|^([0-9A-Za-z]{4,})$|",'Home/share/[1]');
+		$router->add_preg("|^add/([a-z-]{3,})$|",'Home/add/[1]');
 	}
 } 

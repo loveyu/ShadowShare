@@ -79,3 +79,47 @@ function uname2id($name){
 	}
 	return $id;
 }
+
+/**
+ * 生成随机字符
+ * @param int $len
+ * @return string
+ */
+function salt($len = 12){
+	$output = '';
+	for($a = 0; $a < $len; $a++){
+		$output .= chr(mt_rand(33, 126)); //生成php随机数
+	}
+	return $output;
+}
+
+/**
+ * Md5的包装器
+ * @param string $str
+ * @return string
+ */
+function _md5($str){
+	return md5($str."\xFF\xFF");
+}
+
+/**
+ * 通过加盐生成hash值
+ * @param $hash
+ * @param $salt
+ * @return string
+ */
+function salt_hash($hash, $salt){
+	$count = count($salt);
+	return _hash(substr($salt, 0, $count / 3) . $hash . $salt);
+}
+
+/**
+ * 单独封装hash函数
+ * @param      $str
+ * @param bool $raw_output 为true时返回二进制数据
+ * @return string
+ */
+function _hash($str, $raw_output = false){
+	return hash("sha256", $str, $raw_output);
+}
+

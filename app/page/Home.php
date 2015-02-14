@@ -21,6 +21,16 @@ class Home extends Page{
 		var_dump($id);
 	}
 
+	public function add($type=NULL){
+		switch($type){
+			case "url":
+				$this->__view("add/url.php");
+				break;
+			default:
+				$this->__load_404();
+		}
+	}
+
 	/**
 	 * 404
 	 */

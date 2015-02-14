@@ -46,7 +46,6 @@ class DB{
 	 */
 	public function d_share_create_nextID(){
 		return $this->driver->insert("share", [
-			's_uname' => '',
 			's_type' => 0,
 			's_time_share' => NOW_TIME
 		]);

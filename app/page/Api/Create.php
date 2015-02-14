@@ -12,7 +12,8 @@ use ULib\RestApi;
 
 class Create extends RestApi{
 	public function __construct(){
-		parent::__construct(NULL, ['method' => 'GET']);
+		parent::__construct(NULL, ['method' => 'POST']);
+		ignore_user_abort(true);//忽略用户中断
 	}
 
 	public function url(){
@@ -27,14 +28,14 @@ class Create extends RestApi{
 		$share = class_share('Url');
 		if($share->create(class_member()->getUid())){
 			if($share->setData($url)){
-				$this->_set_status(true,0);
+				$this->_set_status(true, 0);
 				$this->_set_data($share->getUname());
-			}else{
-
-				$this->_set_status(false,3003,'分享数据设置失败');
+			} else{
+				$share->delete_failed_share();
+				$this->_set_status(false, 3003, '分享数据设置失败');
 			}
-		}else{
-			$this->_set_status(false,3002,'创建分享失败');
+		} else{
+			$this->_set_status(false, 3002, '创建分享失败');
 		}
 	}
 

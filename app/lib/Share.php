@@ -67,6 +67,8 @@ abstract class Share{
 		$rt = $db->d_share_update($id, $this->base_data);
 		$this->base_data['s_id'] = $id;
 		if($rt !== 1){
+			Log::write(print_r($db->get_error(), true));
+			$this->delete_failed_share();
 			return false;
 		}
 		return true;
@@ -98,9 +100,10 @@ abstract class Share{
 		if(!isset($this->base_data['s_id'])){
 			return;
 		}
-		if(class_db()->d_share_delete($this->base_data['s_id'])){
+		if(!class_db()->d_share_delete($this->base_data['s_id'])){
 			Log::write("一条数据基本数据删除失败" . $this->base_data['s_id'], Log::NOTICE);
 		}
+		Log::write("删除失败的数据:" . $this->base_data['s_id'], Log::NOTICE);
 	}
 
 	/**

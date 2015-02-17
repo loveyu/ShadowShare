@@ -123,3 +123,56 @@ function _hash($str, $raw_output = false){
 	return hash("sha256", $str, $raw_output);
 }
 
+/**
+ * 将数据列表转为KeyMap
+ * @param array        $list
+ * @param string       $key
+ * @param string|array $value
+ * @return array
+ */
+function list2keymap($list, $key, $value){
+	if(!isset($list[0])){
+		return [];
+	}
+	$rt = [];
+	if(is_array($value)){
+		foreach($list as $v){
+			$rt[$v[$key]] = [];
+			foreach($value as $v2){
+				$rt[$v[$key]][$v2] = $v[$v2];
+			}
+		}
+	} else{
+		foreach($list as $v){
+			$rt[$v[$key]] = $v[$value];
+		}
+	}
+	return $rt;
+}
+
+/**
+ * 将数据列表转为KeyMap，保留键名
+ * @param array        $list
+ * @param string|array $value
+ * @return array
+ */
+function list2keymapSK($list, $value){
+	if(!is_array($list)){
+		return [];
+	}
+	$rt = [];
+	if(is_array($value)){
+		foreach($list as $key => $v){
+			$rt[$key] = [];
+			foreach($value as $v2){
+				$rt[$key][$v2] = $v[$v2];
+			}
+		}
+	} else{
+		foreach($list as $key => $v){
+			$rt[$key] = $v[$value];
+		}
+	}
+	return $rt;
+}
+

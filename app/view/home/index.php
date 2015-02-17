@@ -5,6 +5,7 @@
 $this->get_header();
 ?>
 	<h1>阅后即隐，分享一小会</h1>
+	<p><a href="<?php echo get_url('Home','all_list')?>">全部分享</a></p>
 	<div>
 		<?php
 		foreach([

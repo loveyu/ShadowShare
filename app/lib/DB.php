@@ -71,6 +71,42 @@ class DB{
 	}
 
 	/**
+	 * 获取一条基本分享数据
+	 * @param int $s_id
+	 * @return array|bool
+	 */
+	public function d_share_get($s_id){
+		return $this->driver->get("share", "*", ['s_id' => $s_id]);
+	}
+
+	/**
+	 * 更新一条分享的访问次数
+	 * @param int $s_id
+	 * @return int
+	 */
+	public function d_share_update_count_add($s_id){
+		return $this->driver->update("share", ["s_share_count[+]" => 1], ['s_id' => $s_id]);
+	}
+
+	/**
+	 * 更新一条分享的失败访问次数
+	 * @param int $s_id
+	 * @return int
+	 */
+	public function d_share_update_over_add($s_id){
+		return $this->driver->update("share", ["s_share_over[+]" => 1], ['s_id' => $s_id]);
+	}
+
+	/**
+	 * 获取一条基本分享URL数据
+	 * @param int $s_id
+	 * @return array|bool
+	 */
+	public function d_share_url_get($s_id){
+		return $this->driver->get("share_url", "*", ['s_id' => $s_id]);
+	}
+
+	/**
 	 * 创建URL的分享
 	 * @param int    $s_id 基本信息表ID
 	 * @param string $su_url

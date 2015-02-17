@@ -92,6 +92,6 @@ class Home extends Page{
 	 */
 	public function not_found(){
 		send_http_status(404);
-		echo "This is 404 page!";
+		$this->__view("home/404.php");
 	}
 }

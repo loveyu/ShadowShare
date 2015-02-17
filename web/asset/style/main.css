@@ -1,0 +1,45 @@
+.main-title{
+	text-shadow: #204d74 1px 1px;
+	text-align: center;
+	margin-top: 30px;
+}
+
+.main-share-list{
+	text-align: center;
+	margin: 120px 0;
+	font-size: 2em;
+}
+
+.footer{
+	margin: 30px 0 15px 0;
+	color: #444444;
+	text-align: center;
+	line-height: 0.8;
+}
+.footer .notice{
+	font-size: 10px;
+	text-align: right;
+}
+.share-box{
+	text-align: center;
+	margin: 30px 0;
+	padding: 40px 0;
+	border: 1px dashed #e0e0e0;
+}
+
+.share-box h2{
+	margin-top: 0;
+}
+
+#ShareUrl #Result {
+	margin: 15px 0;
+	line-height: 2;
+}
+#ShareUrl #Result p span{
+	color: #2b542c;
+}
+
+.share-error{
+	text-align: center;
+	margin-top: 40px;
+}

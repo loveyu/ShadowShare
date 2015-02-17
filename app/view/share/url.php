@@ -5,8 +5,9 @@
  */
 $this->get_header();
 ?>
-<div>
-	<?php var_dump($__share);?>
+<div class="share-box">
+	<h3>网址分享:</h3>
+	<p><a href="<?php echo $__share->getUrl()?>"><?php echo $__share->getUrl()?></a></p>
 </div>
 <?php
 $this->get_footer();

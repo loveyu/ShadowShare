@@ -29,7 +29,12 @@ class Create extends RestApi{
 		if($share->create(class_member()->getUid())){
 			if($share->setData($url)){
 				$this->_set_status(true, 0);
-				$this->_set_data(get_url($share->getUname()));
+				$url = get_url($share->getUname());
+				$this->_set_data([
+					'uname' => $share->getUname(),
+					'url' => $url,
+					'redirect' => $url . "?mode=jump"
+				]);
 			} else{
 				$share->delete_failed_share();
 				$this->_set_status(false, 3003, '分享数据设置失败');

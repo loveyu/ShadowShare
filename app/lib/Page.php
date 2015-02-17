@@ -19,7 +19,25 @@ class Page extends \Core\Page{
 		parent::__construct();
 	}
 
-	public function get_header(){
+	/**
+	 * 加载头文件
+	 * @param mixed $info 包含的信息，默认为字符串标签
+	 */
+	public function get_header($info = NULL){
+		if(is_string($info)){
+			$this->setTitle($info);
+		} else if(is_array($info)){
+			if(isset($info['title'])){
+				if(is_array($info['title'])){
+					call_user_func_array([
+						$this,
+						'setTitle'
+					], $info['title']);
+				} else{
+					$this->setTitle($info['title']);
+				}
+			}
+		}
 		$this->__view("common/header.php");
 	}
 

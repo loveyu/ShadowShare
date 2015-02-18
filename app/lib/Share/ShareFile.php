@@ -11,9 +11,20 @@ namespace ULib\Share;
 use CLib\Upload;
 use ULib\Share;
 
+/**
+ * Class ShareFile
+ * @package ULib\Share
+ */
 class ShareFile extends Share{
+	/**
+	 * @var array 文件数据信息
+	 */
 	private $info;
 
+	/**
+	 * 初始化
+	 * @throws \Exception
+	 */
 	public function __construct(){
 		$this->share_type = self::TYPE_FILE;
 		parent::__construct();
@@ -74,6 +85,9 @@ class ShareFile extends Share{
 		return $this->info;
 	}
 
+	/**
+	 * 开始下载当前文件
+	 */
 	public function downloadFile(){
 		if(empty($this->info['sf_type'])){
 			header("Content-Disposition: attachment; filename=" . $this->info['sf_name']);
@@ -92,14 +106,26 @@ class ShareFile extends Share{
 		fclose($fp);
 	}
 
+	/**
+	 * 返回文件名
+	 * @return string
+	 */
 	public function getFileName(){
 		return $this->info['sf_name'];
 	}
 
+	/**
+	 * 返回文件大小
+	 * @return int
+	 */
 	public function getFileSize(){
 		return $this->info['sf_size'];
 	}
 
+	/**
+	 * 返回一个可读的文件大小
+	 * @return string
+	 */
 	public function getFileReadSize(){
 		return file_h_size($this->info['sf_size']);
 	}

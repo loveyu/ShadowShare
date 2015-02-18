@@ -86,10 +86,28 @@ define("_Language_", _AppPath_ . "/language");
  */
 define("_Cache_", _AppPath_ . "/cache");
 
+if(isset($_SERVER['HTTP_HOST'])){
+	switch(strtolower($_SERVER['HTTP_HOST'])){
+		case "my.changda.club":
+		case "my.cd.loc":
+			$page_path = "/page.my";
+			break;
+		case "changda.club":
+		case "cd.loc":
+			$page_path = "/page";
+			break;
+		default:
+			$page_path = "/page.error";
+			break;
+	}
+} else{
+	$page_path = "/page";
+}
 /**
  * 页面路径
  */
-define("_PagePath_", _AppPath_ . "/page");
+define("_PagePath_", _AppPath_ . $page_path);
+unset($page_path);
 
 /**
  * 功能函数路径

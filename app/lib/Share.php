@@ -275,7 +275,7 @@ abstract class Share{
 	 * @return int
 	 */
 	public function getViewType(){
-		$mode = isset($_REQUEST['mode']) ? $_REQUEST['mode'] : "null";
+		$mode = isset($_REQUEST['m']) ? $_REQUEST['m'] : "null";
 		$mode = strtolower(trim($mode));
 		switch($mode){
 			case "raw":

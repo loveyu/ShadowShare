@@ -85,7 +85,10 @@ class DB{
 	 * @return int
 	 */
 	public function d_share_update_count_add($s_id){
-		return $this->driver->update("share", ["s_share_count[+]" => 1], ['s_id' => $s_id]);
+		return $this->driver->update("share", [
+			"s_share_count[+]" => 1,
+			's_time_last' => NOW_TIME
+		], ['s_id' => $s_id]);
 	}
 
 	/**
@@ -132,7 +135,6 @@ class DB{
 		]) !== -1;
 	}
 
-
 	/**
 	 * 获取一条文本分享数据
 	 * @param $s_id
@@ -140,5 +142,30 @@ class DB{
 	 */
 	public function d_share_text_get($s_id){
 		return $this->driver->get("share_text", "*", ['s_id' => $s_id]);
+	}
+
+	/**
+	 * 插入文件分享数据
+	 * @param $s_id
+	 * @param $sf_md5
+	 * @param $sf_sha1
+	 * @param $sf_name
+	 * @param $sf_type
+	 * @param $sf_size
+	 * @param $sf_save_name
+	 * @param $sf_save_path
+	 * @return bool
+	 */
+	public function d_share_file_insert($s_id, $sf_md5, $sf_sha1, $sf_name, $sf_type, $sf_size, $sf_save_name, $sf_save_path){
+		return $this->driver->insert("share_file", compact('s_id', 'sf_md5', 'sf_sha1', 'sf_name', 'sf_type', 'sf_size', 'sf_save_name', 'sf_save_path')) !== -1;
+	}
+
+	/**
+	 * 获取文件分享的数据
+	 * @param $s_id
+	 * @return array|bool
+	 */
+	public function d_share_file_get($s_id){
+		return $this->driver->get("share_file", "*", ['s_id' => $s_id]);
 	}
 }

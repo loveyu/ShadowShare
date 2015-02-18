@@ -46,6 +46,13 @@ class Home extends Page{
 									echo $share->getPrimaryData();
 									$share->activeSet();
 									break;
+								case Share::TYPE_FILE:
+									/**
+									 * @var $share \ULib\Share\ShareFile
+									 */
+									$share->downloadFile();
+									$share->activeSet();
+									break;
 								default:
 									$this->__load_404();
 							}
@@ -60,6 +67,10 @@ class Home extends Page{
 								case Share::TYPE_TEXT:
 									$this->__view("share/text.php", ['share' => $share]);
 									$share->activeSet();
+									break;
+								case Share::TYPE_FILE:
+									//不下载，不触发记录
+									$this->__view("share/file.php", ['share' => $share]);
 									break;
 								default:
 									$this->__load_404();
@@ -86,6 +97,9 @@ class Home extends Page{
 				break;
 			case "text":
 				$this->__view("add/text.php");
+				break;
+			case "file":
+				$this->__view("add/file.php");
 				break;
 			default:
 				$this->__load_404();

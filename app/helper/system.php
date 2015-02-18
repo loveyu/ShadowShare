@@ -99,7 +99,7 @@ function salt($len = 12){
  * @return string
  */
 function _md5($str){
-	return md5($str."\xFF\xFF");
+	return md5($str . "\xFF\xFF");
 }
 
 /**
@@ -174,5 +174,33 @@ function list2keymapSK($list, $value){
 		}
 	}
 	return $rt;
+}
+
+/**
+ * 可阅读的文件大小
+ * @param int $size
+ * @return bool|float
+ */
+function file_h_size($size){
+	$a = [
+		"B",
+		"KB",
+		"MB",
+		"GB",
+		"TB",
+		"PB",
+		"EB",
+		"ZB",
+		"YB"
+	];
+	$pos = 0;
+	if($size < 0){
+		return false;
+	}
+	while($size > 1024){
+		$size /= 1024;
+		$pos++;
+	}
+	return round($size, 2) .$a[$pos];
 }
 

@@ -9,7 +9,7 @@ $this->get_header();
 		foreach([
 			'url' => '网址',
 			'text' => '文本',
-//			'file' => '文件',
+			'file' => '文件',
 //			'code' => '代码',
 //			'markdown' => 'MarkDown',
 //			'picture' => '图片',

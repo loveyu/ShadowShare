@@ -37,7 +37,7 @@ class Create extends RestApi{
 				$this->_set_data([
 					'uname' => $share->getUname(),
 					'url' => $url,
-					'raw' => $url . "?mode=raw"
+					'raw' => $url . "?m=raw"
 				]);
 			} else{
 				$share->delete_failed_share();
@@ -68,7 +68,7 @@ class Create extends RestApi{
 				$this->_set_data([
 					'uname' => $share->getUname(),
 					'url' => $url,
-					'redirect' => $url . "?mode=jump"
+					'redirect' => $url . "?m=go"
 				]);
 			} else{
 				$share->delete_failed_share();
@@ -76,6 +76,36 @@ class Create extends RestApi{
 			}
 		} else{
 			$this->_set_status(false, 3002, '创建分享失败');
+		}
+	}
+
+	/**
+	 * 单文件分享
+	 */
+	public function file(){
+		if(!$this->_run_check()){
+			return;
+		}
+		if(!isset($_FILES['file']['error']) || $_FILES['file']['error'] != 0){
+			$this->_set_status(false, 3021, "上传的文件有误，请重试");
+			return;
+		}
+		$share = class_share('File');
+		if($share->create(class_member()->getUid())){
+			if($share->setData($_FILES['file'])){
+				$this->_set_status(true, 0);
+				$url = get_url($share->getUname());
+				$this->_set_data([
+					'uname' => $share->getUname(),
+					'url' => $url,
+					'download' => $url . "?m=bin"
+				]);
+			} else{
+				$share->delete_failed_share();
+				$this->_set_status(false, 3023, '分享数据设置失败');
+			}
+		} else{
+			$this->_set_status(false, 3022, '创建分享失败');
 		}
 	}
 

@@ -3,7 +3,7 @@
  * @var $this    UView\Home
  * @var $__share ULib\Share\ShareUrl
  */
-$this->get_header();
+$this->get_header("网址分享");
 ?>
 <div class="share-box">
 	<h3>网址分享:</h3>

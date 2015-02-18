@@ -4,3 +4,4 @@
 app/cache/
 app/log/*.log
 test/
+data/file/*/

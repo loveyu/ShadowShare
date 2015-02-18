@@ -3,9 +3,8 @@
  * @var $this ULib\Page
  */
 header("Content-Type: text/html; charset=utf-8");
-?>
-<!doctype html>
-<html lang="en">
+?><!doctype html>
+<html lang="zh-cn">
 <head>
 	<meta charset="UTF-8">
 	<title><?php echo $this->getTitle() ?></title>

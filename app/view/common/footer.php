@@ -3,6 +3,7 @@
 	<p class="notice help-block">非特殊数据，访问一次后即失效！</p>
 </div>
 </div>
+<?php if($_SERVER['HTTP_HOST']!="cd.loc"):?>
 <script type="text/javascript">
 	var _paq = _paq || [];
 	_paq.push(["setCookieDomain", "*.changda.club"]);
@@ -17,5 +18,6 @@
 	})();
 </script>
 <noscript><p><img src="https://www.loveyu.org/tj/piwik.php?idsite=6" style="border:0;" alt="" /></p></noscript>
+<?php endif;?>
 </body>
 </html>

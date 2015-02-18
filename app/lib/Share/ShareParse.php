@@ -63,6 +63,9 @@ class ShareParse extends Share{
 			case self::TYPE_TEXT:
 				$share = class_share("Text");
 				break;
+			case self::TYPE_FILE:
+				$share = class_share("File");
+				break;
 			default:
 				return false;
 		}

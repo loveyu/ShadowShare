@@ -124,6 +124,11 @@ define("_ViewPath_", _AppPath_ . "/view");
  */
 define("_LibPath_", _AppPath_ . "/lib");
 
+/**
+ * 文件存储相对目录
+ */
+define("_DATA_FILE_", "/data/file");
+
 //设置运行错误信息
 if(_Debug_){
 	ini_set('display_errors', 'on');

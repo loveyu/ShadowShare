@@ -8,7 +8,7 @@ $this->get_header();
 		<?php
 		foreach([
 			'url' => '网址',
-//			'text' => '文本',
+			'text' => '文本',
 //			'file' => '文件',
 //			'code' => '代码',
 //			'markdown' => 'MarkDown',

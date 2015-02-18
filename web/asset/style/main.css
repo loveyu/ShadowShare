@@ -3,6 +3,9 @@
 	text-align: center;
 	margin-top: 30px;
 }
+.main-title a:hover{
+	text-decoration: none;
+}
 
 .main-share-list{
 	text-align: center;
@@ -36,15 +39,36 @@
 	margin-top: 0;
 }
 
-#ShareUrl #Result {
+.share-box #Result {
 	margin: 15px 0;
 	line-height: 2;
 }
-#ShareUrl #Result p span{
+.share-box #Result p span{
 	color: #2b542c;
 }
 
 .share-error{
 	text-align: center;
 	margin-top: 40px;
+	margin-bottom: 100px;
+}
+
+#ShareText #InputText{
+	width: 100%;
+	max-width: 600px;
+	margin: 10px auto;
+
+}
+
+.share-text-box{
+	padding-top: 15px;
+}
+.share-text-box h3{
+	margin: 0 0 15px 0;
+}
+.share-text-box p{
+	line-height: 1.8;
+	text-align: left;
+	padding: 8px 12px;
+	color: #88493d;
 }

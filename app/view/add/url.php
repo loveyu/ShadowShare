@@ -25,8 +25,7 @@ $this->get_header("创建一个网址分享");
 				if (!data.status) {
 					alert(data.msg);
 				} else {
-					$("#Result").html("<p>分享地址为 : <span>" + data.data.url + "</span><br>跳转地址为 : <span>" + data.data.redirect + "</span></p>");
-					$("#Result").slideDown("slow");
+					$("#Result").html("<p>分享地址为 : <span>" + data.data.url + "</span><br>跳转地址为 : <span>" + data.data.redirect + "</span></p>").slideDown("slow");
 					$("#InputUrl").val("");
 				}
 			});

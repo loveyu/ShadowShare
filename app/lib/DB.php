@@ -118,4 +118,27 @@ class DB{
 			'su_url' => $su_url
 		]) !== -1;
 	}
+
+	/**
+	 * 创建文本内容分享
+	 * @param int    $s_id 基本信息表ID
+	 * @param string $su_text
+	 * @return bool
+	 */
+	public function d_share_text_insert($s_id, $su_text){
+		return $this->driver->insert("share_text", [
+			's_id' => $s_id,
+			'st_text' => $su_text
+		]) !== -1;
+	}
+
+
+	/**
+	 * 获取一条文本分享数据
+	 * @param $s_id
+	 * @return array|bool
+	 */
+	public function d_share_text_get($s_id){
+		return $this->driver->get("share_text", "*", ['s_id' => $s_id]);
+	}
 }

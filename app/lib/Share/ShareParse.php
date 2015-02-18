@@ -53,9 +53,15 @@ class ShareParse extends Share{
 			return false;
 		}
 		$info = $this->baseInfo($id, $uname);
+		if(!isset($info['s_id'])){
+			return false;
+		}
 		switch($info['s_type']){
 			case self::TYPE_URL:
 				$share = class_share("Url");
+				break;
+			case self::TYPE_TEXT:
+				$share = class_share("Text");
 				break;
 			default:
 				return false;

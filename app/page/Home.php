@@ -39,11 +39,26 @@ class Home extends Page{
 									$this->__load_404();
 							}
 							break;
+						case Share::VIEW_RAW:
+							switch($share->getShareType()){
+								case Share::TYPE_TEXT:
+									header("Content-Type: text/plain; charset=utf-8");
+									echo $share->getPrimaryData();
+									$share->activeSet();
+									break;
+								default:
+									$this->__load_404();
+							}
+							break;
 						default:
 							//默认查看视图模式
 							switch($share->getShareType()){
 								case Share::TYPE_URL:
 									$this->__view("share/url.php", ['share' => $share]);
+									$share->activeSet();
+									break;
+								case Share::TYPE_TEXT:
+									$this->__view("share/text.php", ['share' => $share]);
 									$share->activeSet();
 									break;
 								default:
@@ -68,6 +83,9 @@ class Home extends Page{
 		switch($type){
 			case "url":
 				$this->__view("add/url.php");
+				break;
+			case "text":
+				$this->__view("add/text.php");
 				break;
 			default:
 				$this->__load_404();

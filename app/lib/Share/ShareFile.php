@@ -9,6 +9,7 @@ namespace ULib\Share;
 
 
 use CLib\Upload;
+use Core\Log;
 use ULib\Share;
 
 /**
@@ -57,12 +58,17 @@ class ShareFile extends Share{
 				'__FILE_INFO__'
 			]
 		], 'Local', ['server_root_path' => _RootPath_]);
-		$info = $upload->uploadOne($data);
-		$type = mime_get($info['ext']);
-		if($type != $info['type'] && !empty($type) && (empty($info['type']) || $info['type'] == "application/octet-stream")){
-			$info['type'] = $type;
+		try{
+			$info = $upload->uploadOne($data);
+			$type = mime_get($info['ext']);
+			if($type != $info['type'] && !empty($type) && (empty($info['type']) || $info['type'] == "application/octet-stream")){
+				$info['type'] = $type;
+			}
+			return class_db()->d_share_file_insert($this->base_data['s_id'], $info['md5'], $info['sha1'], $info['name'], $info['type'], $info['size'], $info['save_name'], $info['save_path']);
+		} catch(\Exception $ex){
+			Log::write($ex->getMessage());
+			return false;
 		}
-		return class_db()->d_share_file_insert($this->base_data['s_id'], $info['md5'], $info['sha1'], $info['name'], $info['type'], $info['size'], $info['save_name'], $info['save_path']);
 	}
 
 	/**
@@ -91,7 +97,7 @@ class ShareFile extends Share{
 	public function downloadFile(){
 		if(empty($this->info['sf_type'])){
 			header("Content-Disposition: attachment; filename=" . $this->info['sf_name']);
-		}else{
+		} else{
 			header("Content-Disposition: inline; filename=" . $this->info['sf_name']);
 		}
 		header("Content-Type: " . (empty($this->info['sf_type']) ? "application/force-download" : $this->info['sf_type']) . ";");

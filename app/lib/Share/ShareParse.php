@@ -66,6 +66,9 @@ class ShareParse extends Share{
 			case self::TYPE_FILE:
 				$share = class_share("File");
 				break;
+			case self::TYPE_MARKDOWN:
+				$share = class_share("Markdown");
+				break;
 			default:
 				return false;
 		}
@@ -100,7 +103,7 @@ class ShareParse extends Share{
 
 	public function getAllId(){
 		//DEBUG 方法
-		$list = class_db()->getDriver()->select("share", "s_uname");
+		$list = class_db()->getDriver()->select("share", ["s_uname","s_time_share","s_type"]);
 		return $list;
 	}
 }

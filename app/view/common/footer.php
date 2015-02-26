@@ -19,5 +19,6 @@
 </script>
 <noscript><p><img src="https://www.loveyu.org/tj/piwik.php?idsite=6" style="border:0;" alt="" /></p></noscript>
 <?php endif;?>
+<?php footer_hook();?>
 </body>
 </html>

@@ -168,4 +168,25 @@ class DB{
 	public function d_share_file_get($s_id){
 		return $this->driver->get("share_file", "*", ['s_id' => $s_id]);
 	}
+
+	/**
+	 * 插入markdown数据
+	 * @param int    $s_id
+	 * @param string $sm_content
+	 * @param string $sm_title
+	 * @return int
+	 */
+	public function d_share_markdown_insert($s_id, $sm_content, $sm_title = ''){
+		return $this->driver->insert("share_markdown", compact('s_id', 'sm_content', 'sm_title')) !== -1;
+	}
+
+
+	/**
+	 * 获取Markdown分享的数据
+	 * @param $s_id
+	 * @return array|bool
+	 */
+	public function d_share_markdown_get($s_id){
+		return $this->driver->get("share_markdown", "*", ['s_id' => $s_id]);
+	}
 }

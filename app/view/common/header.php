@@ -17,6 +17,7 @@ header("Content-Type: text/html; charset=utf-8");
 	<script>
 		var BASE_URL = <?php echo json_encode(get_url(''))?>;
 	</script>
+	<?php header_hook();?>
 </head>
 <body>
 <div class="container">

@@ -37,6 +37,10 @@ abstract class Share{
 	 * 网址跳转模式
 	 */
 	const VIEW_REDIRECT = 2;
+	/**
+	 * HTML查看模式
+	 */
+	const VIEW_HTML = 3;
 
 	const ACTIVE_NORMAL = 0;
 	const ACTIVE_404 = 1;
@@ -286,6 +290,8 @@ abstract class Share{
 			case "jump":
 			case "go":
 				return self::VIEW_REDIRECT;
+			case "html":
+				return self::VIEW_HTML;
 			default:
 				return self::VIEW_NORMAL;
 		}

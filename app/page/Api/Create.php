@@ -108,5 +108,37 @@ class Create extends RestApi{
 			$this->_set_status(false, 3022, '创建分享失败');
 		}
 	}
+	/**
+	 * Markdown分享
+	 */
+	public function markdown(){
+		if(!$this->_run_check()){
+			return;
+		}
+		$data = trim($this->__req->post('data'));
+		if(empty($data)){
+			$this->_set_status(false, 3031, "数据不允许为空");
+			return;
+		}
+		$share = class_share('Markdown');
+		if($share->create(class_member()->getUid())){
+			if($share->setData($data)){
+				$this->_set_status(true, 0);
+				$url = get_url($share->getUname());
+				$this->_set_data([
+					'uname' => $share->getUname(),
+					'url' => $url,
+					'raw' => $url . "?m=raw",
+					'html' => $url . "?m=html"
+				]);
+			} else{
+				$share->delete_failed_share();
+				$this->_set_status(false, 3033, '分享数据设置失败');
+			}
+		} else{
+			$this->_set_status(false, 3032, '创建分享失败');
+		}
+	}
+
 
 }

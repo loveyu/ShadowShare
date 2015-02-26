@@ -201,6 +201,113 @@ function file_h_size($size){
 		$size /= 1024;
 		$pos++;
 	}
-	return round($size, 2) .$a[$pos];
+	return round($size, 2) . $a[$pos];
 }
 
+/**
+ * 头文件输出钩子
+ */
+function header_hook(){
+	hook()->apply("header_hook", NULL);
+}
+
+/**
+ * 页脚文件输出钩子
+ */
+function footer_hook(){
+	hook()->apply("footer_hook", NULL);
+}
+
+
+/**
+ * 生成一个js引入连接
+ * @param array $list 传入名称列表
+ * @return string
+ */
+function html_js($list){
+	if(!isset($list['type'])){
+		$list['type'] = 'text/javascript';
+	}
+	$d = "";
+	foreach($list as $n => $v){
+		$d .= " " . $n . '="' . $v . '"';
+	}
+	return "<script$d></script>";
+}
+
+/**
+ * 生成css引入连接
+ * @param array|string $list 传入名称列表
+ * @return string
+ */
+function html_css($list){
+	if(!is_array($list)){
+		$r = $list;
+		$list = [];
+		$list['href'] = $r;
+	}
+	if(!isset($list['rel'])){
+		$list['rel'] = 'stylesheet';
+	}
+	if(!isset($list['type'])){
+		$list['type'] = 'text/css';
+	}
+	return html_link($list);
+}
+
+/**
+ * 生成引入连接
+ * @param array $list
+ * @return string
+ */
+function html_link($list){
+	$d = "";
+	foreach($list as $n => $v){
+		$d .= " " . $n . '="' . $v . '"';
+	}
+	return "<link$d />";
+}
+
+/**
+ * 生成标签
+ * @param array $list
+ * @return string
+ */
+function html_meta($list){
+	$d = "";
+	foreach($list as $n => $v){
+		$d .= " " . $n . '="' . $v . '"';
+	}
+	return "<meta$d />";
+}
+
+/**
+ * 获取资源文件路径
+ * @param string $file
+ * @param string $cache_code
+ * @return string
+ */
+function get_asset($file, $cache_code = ''){
+	return get_file_url([
+		'asset',
+		$file
+	]) . ((!empty($cache_code) && is_string($cache_code)) ? "?_v=" . $cache_code : "");
+}
+
+/**
+ * 过滤网址
+ * @param string $url
+ * @return string
+ */
+function filter_url($url){
+	foreach(['/^javascript:/'] as $v){
+		$x = preg_match($v, $url);
+		if($x){
+			return "#";
+		}
+	}
+	if(!filter_var($url, FILTER_VALIDATE_URL)){
+		return htmlspecialchars($url);
+	}
+	return $url;
+}

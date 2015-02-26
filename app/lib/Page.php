@@ -15,8 +15,14 @@ class Page extends \Core\Page{
 	 */
 	private $title;
 
+	private static $_header = [];
+	private static $_footer = [];
+
 	function __construct(){
 		parent::__construct();
+		$hook = $this->__core->getHook();
+		$hook->add('header_hook', "ULib\\Page::__out_header");
+		$hook->add('footer_hook', "ULib\\Page::__out_footer");
 	}
 
 	/**
@@ -37,11 +43,87 @@ class Page extends \Core\Page{
 					$this->setTitle($info['title']);
 				}
 			}
+			if(isset($info['js'])){
+				$this->_set_header($info['js'], 'js');
+			}
+			if(isset($info['css'])){
+				$this->_set_header($info['css'], 'css');
+			}
+			if(isset($info['data'])){
+				$this->_set_header($info['data'], 'data');
+			}
 		}
 		$this->__view("common/header.php");
 	}
 
-	public function get_footer(){
+	protected function _set_header($data, $type = 'data'){
+		if(is_array($data)){
+			foreach($data as $v){
+				self::$_header[] = [
+					'data' => $v,
+					'type' => $type
+				];
+			}
+		} else{
+			self::$_header[] = compact('data', 'type');
+		}
+	}
+
+	protected function _set_footer($data, $type = 'data'){
+		if(is_array($data)){
+			foreach($data as $v){
+				self::$_footer[] = [
+					'data' => $v,
+					'type' => $type
+				];
+			}
+		} else{
+			self::$_footer[] = compact('data', 'type');
+		}
+	}
+
+	public static function __out_header(){
+		foreach(self::$_header as $v){
+			switch($v['type']){
+				case 'data':
+					echo $v['data'];
+					break;
+				case "js":
+					echo html_js(['src' => get_asset($v['data'])]), "\n";
+					break;
+				case "css":
+					echo html_css(['href' => get_asset($v['data'])]), "\n";
+					break;
+			}
+		}
+	}
+
+	public static function __out_footer(){
+		foreach(self::$_footer as $v){
+			switch($v['type']){
+				case 'data':
+					echo $v['data'];
+					break;
+				case "js":
+					echo html_js(['src' => get_asset($v['data'])]), "\n";
+					break;
+				case "css":
+					echo html_css(['href' => get_asset($v['data'])]), "\n";
+					break;
+			}
+		}
+	}
+
+	public function get_footer($info = NULL){
+		if(isset($info['js'])){
+			$this->_set_footer($info['js'], 'js');
+		}
+		if(isset($info['css'])){
+			$this->_set_footer($info['css'], 'css');
+		}
+		if(isset($info['data'])){
+			$this->_set_footer($info['data'], 'data');
+		}
 		$this->__view("common/footer.php");
 	}
 
@@ -67,10 +149,7 @@ class Page extends \Core\Page{
 	}
 
 	public function get_asset($file, $cache_code = ''){
-		return get_file_url([
-			'asset',
-			$file
-		]) . ((!empty($cache_code) && is_string($cache_code)) ? "?_v=" . $cache_code : "");
+		return get_asset($file, $cache_code);
 	}
 
 	public static function __un_register(){

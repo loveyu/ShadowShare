@@ -11,7 +11,7 @@ $this->get_header();
 			'text' => '文本',
 			'file' => '文件',
 //			'code' => '代码',
-//			'markdown' => 'MarkDown',
+			'markdown' => 'Markdown',
 //			'picture' => '图片',
 //			'picture-text' => '图文',
 //			'multi-text' => '多行文本'

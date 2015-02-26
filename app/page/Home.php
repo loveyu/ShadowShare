@@ -37,12 +37,35 @@ class Home extends Page{
 									break;
 								default:
 									$this->__load_404();
+									break;
+							}
+							break;
+						case Share::VIEW_HTML:
+							switch($share->getShareType()){
+								case Share::TYPE_MARKDOWN:
+									header("Content-Type: text/html; charset=utf-8");
+									header("Content-Disposition: inline; filename=" . $share->getUname() . ".html");
+									/**
+									 * @var $share \ULib\Share\ShareMarkdown
+									 */
+									echo $share->getHtml();
+									$share->activeSet();
+									break;
+								default:
+									$this->__load_404();
+									break;
 							}
 							break;
 						case Share::VIEW_RAW:
 							switch($share->getShareType()){
 								case Share::TYPE_TEXT:
 									header("Content-Type: text/plain; charset=utf-8");
+									echo $share->getPrimaryData();
+									$share->activeSet();
+									break;
+								case Share::TYPE_MARKDOWN:
+									header("Content-Type: text/plain; charset=utf-8");
+									header("Content-Disposition: inline; filename=" . $share->getUname() . ".md");
 									echo $share->getPrimaryData();
 									$share->activeSet();
 									break;
@@ -55,6 +78,7 @@ class Home extends Page{
 									break;
 								default:
 									$this->__load_404();
+									break;
 							}
 							break;
 						default:
@@ -72,8 +96,13 @@ class Home extends Page{
 									//不下载，不触发记录
 									$this->__view("share/file.php", ['share' => $share]);
 									break;
+								case Share::TYPE_MARKDOWN:
+									$this->__view("share/markdown.php", ['share' => $share]);
+									$share->activeSet();
+									break;
 								default:
 									$this->__load_404();
+									break;
 							}
 							break;
 					}
@@ -101,6 +130,9 @@ class Home extends Page{
 			case "file":
 				$this->__view("add/file.php");
 				break;
+			case "markdown":
+				$this->__view("add/markdown.php");
+				break;
 			default:
 				$this->__load_404();
 		}
@@ -113,10 +145,10 @@ class Home extends Page{
 		 */
 		$parse = class_share('Parse');
 		$this->get_header();
-		foreach($parse->getAllId() as $uname){
-			echo "<p><a href='" . get_url($uname) . "'>" . get_url($uname) . "</a></p>\n";
+		foreach($parse->getAllId() as $value){
+			echo "<p>", date("Y-m-d H:i:s", $value['s_time_share']), ",", $parse->getShareTypeName($value['s_type']), ":<a href='" . get_url($value['s_uname']) . "'>" . get_url($value['s_uname']) . "</a></p>\n";
 		}
-		$this->get_header();
+		$this->get_footer();
 	}
 
 	/**

@@ -285,6 +285,7 @@ abstract class Share{
 			case "raw":
 			case "bin":
 			case "binary":
+			case "img":
 				return self::VIEW_RAW;
 			case "redirect":
 			case "jump":

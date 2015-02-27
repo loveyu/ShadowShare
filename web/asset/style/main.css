@@ -97,3 +97,12 @@
 	text-align: left;
 	padding: 5px;
 }
+
+.share-picture-box{
+	margin: 5px 10px;
+}
+.share-picture-box img{
+	border: 1px solid #aaa;
+	padding: 1px;
+	display: block;
+}

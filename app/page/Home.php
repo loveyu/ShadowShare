@@ -1,6 +1,7 @@
 <?php
 namespace UView;
 
+use Core\Log;
 use ULib\Page;
 use ULib\Share;
 
@@ -19,103 +20,116 @@ class Home extends Page{
 
 
 	public function share($id = NULL){
-		/**
-		 * @var $parse \ULib\Share\ShareParse
-		 */
-		$parse = class_share('Parse');
-		$share = $parse->parse($id);
-		if(is_object($share)){
-			switch($share->activeCheck()){
-				case Share::ACTIVE_NORMAL:
-					switch($share->getViewType()){
-						case Share::VIEW_REDIRECT:
-							//强制跳转模式
-							switch($share->getShareType()){
-								case Share::TYPE_URL:
-									redirect($share->getPrimaryData(), 'refresh', 302, false);
-									$share->activeSet();
-									break;
-								default:
-									$this->__load_404();
-									break;
-							}
-							break;
-						case Share::VIEW_HTML:
-							switch($share->getShareType()){
-								case Share::TYPE_MARKDOWN:
-									header("Content-Type: text/html; charset=utf-8");
-									header("Content-Disposition: inline; filename=" . $share->getUname() . ".html");
-									/**
-									 * @var $share \ULib\Share\ShareMarkdown
-									 */
-									echo $share->getHtml();
-									$share->activeSet();
-									break;
-								default:
-									$this->__load_404();
-									break;
-							}
-							break;
-						case Share::VIEW_RAW:
-							switch($share->getShareType()){
-								case Share::TYPE_TEXT:
-									header("Content-Type: text/plain; charset=utf-8");
-									echo $share->getPrimaryData();
-									$share->activeSet();
-									break;
-								case Share::TYPE_MARKDOWN:
-									header("Content-Type: text/plain; charset=utf-8");
-									header("Content-Disposition: inline; filename=" . $share->getUname() . ".md");
-									echo $share->getPrimaryData();
-									$share->activeSet();
-									break;
-								case Share::TYPE_FILE:
-									/**
-									 * @var $share \ULib\Share\ShareFile
-									 */
-									$share->downloadFile();
-									$share->activeSet();
-									break;
-								default:
-									$this->__load_404();
-									break;
-							}
-							break;
-						default:
-							//默认查看视图模式
-							switch($share->getShareType()){
-								case Share::TYPE_URL:
-									$this->__view("share/url.php", ['share' => $share]);
-									$share->activeSet();
-									break;
-								case Share::TYPE_TEXT:
-									$this->__view("share/text.php", ['share' => $share]);
-									$share->activeSet();
-									break;
-								case Share::TYPE_FILE:
-									//不下载，不触发记录
-									$this->__view("share/file.php", ['share' => $share]);
-									break;
-								case Share::TYPE_MARKDOWN:
-									$this->__view("share/markdown.php", ['share' => $share]);
-									$share->activeSet();
-									break;
-								default:
-									$this->__load_404();
-									break;
-							}
-							break;
-					}
-					break;
-				case Share::ACTIVE_404:
-					$this->__load_404();
-					break;
-				default:
-					$this->__view("home/share_error.php", ['msg' => $share->activeErrorMsg()]);
-					break;
+		try{
+			/**
+			 * @var $parse \ULib\Share\ShareParse
+			 */
+			$parse = class_share('Parse');
+			$share = $parse->parse($id);
+			if(is_object($share)){
+				switch($share->activeCheck()){
+					case Share::ACTIVE_NORMAL:
+						switch($share->getViewType()){
+							case Share::VIEW_REDIRECT:
+								//强制跳转模式
+								switch($share->getShareType()){
+									case Share::TYPE_URL:
+										redirect($share->getPrimaryData(), 'refresh', 302, false);
+										$share->activeSet();
+										break;
+									default:
+										$this->__load_404();
+										break;
+								}
+								break;
+							case Share::VIEW_HTML:
+								switch($share->getShareType()){
+									case Share::TYPE_MARKDOWN:
+										header("Content-Type: text/html; charset=utf-8");
+										header("Content-Disposition: inline; filename=" . $share->getUname() . ".html");
+										/**
+										 * @var $share \ULib\Share\ShareMarkdown
+										 */
+										echo $share->getHtml();
+										$share->activeSet();
+										break;
+									default:
+										$this->__load_404();
+										break;
+								}
+								break;
+							case Share::VIEW_RAW:
+								switch($share->getShareType()){
+									case Share::TYPE_TEXT:
+										header("Content-Type: text/plain; charset=utf-8");
+										echo $share->getPrimaryData();
+										$share->activeSet();
+										break;
+									case Share::TYPE_MARKDOWN:
+										header("Content-Type: text/plain; charset=utf-8");
+										header("Content-Disposition: inline; filename=" . $share->getUname() . ".md");
+										echo $share->getPrimaryData();
+										$share->activeSet();
+										break;
+									case Share::TYPE_FILE:
+									case Share::TYPE_PICTURE:
+										/**
+										 * @var $share \ULib\Share\ShareFile
+										 */
+										if(($msg = $share->downloadFile()) !== true){
+											Log::write($msg . ":" . $share->getUname());
+											$this->__view("home/server_error.php", ['msg' => $msg]);
+										} else{
+											$share->activeSet();
+										}
+										break;
+									default:
+										$this->__load_404();
+										break;
+								}
+								break;
+							default:
+								//默认查看视图模式
+								switch($share->getShareType()){
+									case Share::TYPE_URL:
+										$this->__view("share/url.php", ['share' => $share]);
+										$share->activeSet();
+										break;
+									case Share::TYPE_TEXT:
+										$this->__view("share/text.php", ['share' => $share]);
+										$share->activeSet();
+										break;
+									case Share::TYPE_FILE:
+										//不下载，不触发记录
+										$this->__view("share/file.php", ['share' => $share]);
+										break;
+									case Share::TYPE_MARKDOWN:
+										$this->__view("share/markdown.php", ['share' => $share]);
+										$share->activeSet();
+										break;
+									case Share::TYPE_PICTURE:
+										//图片信息为引用方式，不触发
+										$this->__view("share/picture.php", ['share' => $share]);
+										break;
+									default:
+										$this->__load_404();
+										break;
+								}
+								break;
+						}
+						break;
+					case Share::ACTIVE_404:
+						$this->__load_404();
+						break;
+					default:
+						$this->__view("home/share_error.php", ['msg' => $share->activeErrorMsg()]);
+						break;
+				}
+			} else{
+				$this->__load_404();
 			}
-		} else{
-			$this->__load_404();
+		} catch(\Exception $ex){
+			$this->__view("home/server_error.php", ['msg' => $ex->getMessage()]);
 		}
 	}
 
@@ -132,6 +146,9 @@ class Home extends Page{
 				break;
 			case "markdown":
 				$this->__view("add/markdown.php");
+				break;
+			case "picture":
+				$this->__view("add/picture.php");
 				break;
 			default:
 				$this->__load_404();

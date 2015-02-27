@@ -26,10 +26,11 @@ function class_db(){
 
 /**
  * 返回一个分享的类
- * @param string $type {Url}
+ * @param string       $type    {Url|File|Text|Markdown}
+ * @param array|string $require 依赖额其他类
  * @return \ULib\Share
  */
-function class_share($type){
+function class_share($type, $require = NULL){
 	static $map = [];
 	if(isset($map[$type])){
 		return $map[$type];
@@ -40,6 +41,13 @@ function class_share($type){
 	}
 	$map[$type] = $lib->using('UShare' . $type);
 	if($map[$type] === false){
+		if(is_string($require)){
+			$lib->load('Share/Share' . $require);
+		} elseif(is_array($require)){
+			foreach($require as $v){
+				$lib->load('Share/Share' . $v);
+			}
+		}
 		$lib->load('Share/Share' . $type);
 		$class_name = 'ULib\Share\Share' . $type;
 		$map[$type] = new $class_name();

@@ -20,14 +20,20 @@ class ShareFile extends Share{
 	/**
 	 * @var array 文件数据信息
 	 */
-	private $info;
+	protected $info;
+
+	/**
+	 * @var array 上传文件大小
+	 */
+	protected $upload_config = [];
 
 	/**
 	 * 初始化
+	 * @param int $share_type 初始化类型，设置为可继承
 	 * @throws \Exception
 	 */
-	public function __construct(){
-		$this->share_type = self::TYPE_FILE;
+	public function __construct($share_type = self::TYPE_FILE){
+		$this->share_type = $share_type;
 		parent::__construct();
 	}
 
@@ -38,7 +44,7 @@ class ShareFile extends Share{
 	 */
 	public function setData($data){
 		c_lib()->load('upload');
-		$upload = new Upload([
+		$upload = new Upload(array_merge([
 			'root_path' => _DATA_FILE_,
 			'max_size' => 1024 * 1024,
 			'sub_status' => true,
@@ -57,13 +63,14 @@ class ShareFile extends Share{
 				},
 				'__FILE_INFO__'
 			]
-		], 'Local', ['server_root_path' => _RootPath_]);
+		], $this->upload_config), 'Local', ['server_root_path' => _RootPath_]);
 		try{
 			$info = $upload->uploadOne($data);
 			$type = mime_get($info['ext']);
 			if($type != $info['type'] && !empty($type) && (empty($info['type']) || $info['type'] == "application/octet-stream")){
 				$info['type'] = $type;
 			}
+			$this->info = $info;//用于子类处理数据
 			return class_db()->d_share_file_insert($this->base_data['s_id'], $info['md5'], $info['sha1'], $info['name'], $info['type'], $info['size'], $info['save_name'], $info['save_path']);
 		} catch(\Exception $ex){
 			Log::write($ex->getMessage());
@@ -95,6 +102,13 @@ class ShareFile extends Share{
 	 * 开始下载当前文件
 	 */
 	public function downloadFile(){
+		$name = _RootPath_ . _DATA_FILE_ . "/" . $this->info['sf_save_path'] . $this->info['sf_save_name'];
+		if(!file_exists($name)){
+			return "服务器文件丢失";
+		}
+		if(!is_readable($name)){
+			return "服务器文件读取失败";
+		}
 		if(empty($this->info['sf_type'])){
 			header("Content-Disposition: attachment; filename=" . $this->info['sf_name']);
 		} else{
@@ -103,13 +117,13 @@ class ShareFile extends Share{
 		header("Content-Type: " . (empty($this->info['sf_type']) ? "application/force-download" : $this->info['sf_type']) . ";");
 		header("Content-Length: " . $this->info['sf_size']);
 		flush();
-		$name = _RootPath_ . _DATA_FILE_ . "/" . $this->info['sf_save_path'] . $this->info['sf_save_name'];
 		$fp = fopen($name, "r");
 		while(!feof($fp)){
 			echo fread($fp, 65536);
 			flush();
 		}
 		fclose($fp);
+		return true;
 	}
 
 	/**

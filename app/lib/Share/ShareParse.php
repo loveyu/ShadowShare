@@ -33,7 +33,7 @@ class ShareParse extends Share{
 
 	/**
 	 * 移除创建对象
-	 * @param int  $mid
+	 * @param int $mid
 	 * @param null $more
 	 * @return false
 	 */
@@ -69,6 +69,9 @@ class ShareParse extends Share{
 			case self::TYPE_MARKDOWN:
 				$share = class_share("Markdown");
 				break;
+			case self::TYPE_PICTURE:
+				$share = class_share("Picture", "File");
+				break;
 			default:
 				return false;
 		}
@@ -103,7 +106,11 @@ class ShareParse extends Share{
 
 	public function getAllId(){
 		//DEBUG 方法
-		$list = class_db()->getDriver()->select("share", ["s_uname","s_time_share","s_type"]);
+		$list = class_db()->getDriver()->select("share", [
+			"s_uname",
+			"s_time_share",
+			"s_type"
+		]);
 		return $list;
 	}
 }

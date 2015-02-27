@@ -189,4 +189,25 @@ class DB{
 	public function d_share_markdown_get($s_id){
 		return $this->driver->get("share_markdown", "*", ['s_id' => $s_id]);
 	}
+
+	/**
+	 * 插入分的图片数据
+	 * @param int $s_id
+	 * @param int $sp_width
+	 * @param int $sp_height
+	 * @return bool
+	 */
+	public function d_share_picture_insert($s_id, $sp_width, $sp_height){
+		return $this->driver->insert("share_picture", compact('s_id', 'sp_width', 'sp_height')) !== -1;
+	}
+
+	/**
+	 * 获取图片分享的数据
+	 * @param $s_id
+	 * @return array|bool
+	 */
+	public function d_share_picture_get($s_id){
+		return $this->driver->get("share_picture", "*", ['s_id' => $s_id]);
+	}
+
 }

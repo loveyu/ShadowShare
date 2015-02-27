@@ -323,7 +323,7 @@ function get_db_query_count(){
 	$db = lib()->using('UDB');
 	if($db === false){
 		return 0;
-	}else{
+	} else{
 		return $db->getDriver()->get_query_count();
 	}
 }

@@ -80,7 +80,7 @@
 	padding: 10px;
 	border: 2px dashed #aaa;
 }
-.share-file-select-box:hover{
+.share-file-select-box-hover:hover{
 	background-color: #eee;
 	cursor: pointer;
 }

@@ -8,7 +8,7 @@ $this->get_header("分享一张图片");
 
 		<form id="SharePicture" ondragenter="return false" ondragover="return false" ondrop="dropIt(event)"
 			  action="<?php echo get_url('Api', 'Create', 'picture') ?>" method="post" enctype="multipart/form-data">
-			<div class="share-file-select-box row">
+			<div class="share-file-select-box share-file-select-box-hover row">
 				<div class="col-sm-4 hide">
 					<img class="img-thumbnail" id="PreviewImage"
 						 src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
@@ -97,10 +97,10 @@ $this->get_header("分享一张图片");
 				}
 				$("#SharePicture button.btn").hide();
 				$("#UploadProgress").slideUp();
-				$(".share-file-select-box").unbind("click");
+				$(".share-file-select-box").unbind("click").removeClass("share-file-select-box-hover");
 				$(".share-file-select-box p.info").slideUp("fast", function () {
 					$(this).html("分享地址为 : <span>" + data.data.url + "</span><br>图片地址为 : <span>"
-					+ data.data.image + "</span>").slideDown("fast").removeClass("text-left");
+					+ data.data.image + "</span>").slideDown("fast").removeClass("text-left").css("padding-top","15px");
 				});
 			}
 			function e_process(evt) {

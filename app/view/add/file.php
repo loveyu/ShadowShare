@@ -8,7 +8,7 @@ $this->get_header("分享一个文件");
 
 		<form id="ShareFile" ondragenter="return false" ondragover="return false" ondrop="dropIt(event)"
 			  action="<?php echo get_url('Api', 'Create', 'file') ?>" method="post" enctype="multipart/form-data">
-			<div class="share-file-select-box">
+			<div class="share-file-select-box share-file-select-box-hover">
 				<p class="info">拖拽你的文件，或点击此处，<br>选择你要上传的文件，最大<span>1024KB</span>。</p>
 
 				<div id="UploadProgress" class="progress progress-striped active" style="display: none">
@@ -78,7 +78,7 @@ $this->get_header("分享一个文件");
 				}
 				$("#ShareFile button.btn").hide();
 				$("#UploadProgress").slideUp();
-				$(".share-file-select-box").unbind("click");
+				$(".share-file-select-box").unbind("click").removeClass("share-file-select-box-hover");
 				$(".share-file-select-box p.info").slideUp("fast",function(){
 					$(this).html("分享地址为 : <span>" + data.data.url + "</span><br>文件地址为 : <span>" + data.data.download + "</span>").slideDown("fast");
 				});

@@ -25,7 +25,7 @@
 	<noscript><p><img src="https://www.loveyu.org/tj/piwik.php?idsite=6" style="border:0;" alt=""/></p></noscript>
 <?php endif; ?>
 <script>
-	console.log("页面加载 <?php echo c()->getTimer()->get_second() ?> 秒， 数据库查询 <?php	echo get_db_query_count() ?>次");
+	console.log("页面加载 <?php echo c()->getTimer()->get_second() ?> 秒， 数据库查询 <?php	echo get_db_query_count() ?> 次。");
 </script>
 <?php footer_hook(); ?>
 </body>

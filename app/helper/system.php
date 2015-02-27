@@ -311,3 +311,19 @@ function filter_url($url){
 	}
 	return $url;
 }
+
+/**
+ * 返回数据库的查询次数
+ * @return int
+ */
+function get_db_query_count(){
+	/**
+	 * @var $db \ULib\Db
+	 */
+	$db = lib()->using('UDB');
+	if($db === false){
+		return 0;
+	}else{
+		return $db->getDriver()->get_query_count();
+	}
+}

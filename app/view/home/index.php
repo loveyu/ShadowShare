@@ -12,7 +12,7 @@ $this->get_header();
 			'file' => '文件',
 //			'code' => '代码',
 			'markdown' => 'Markdown',
-//			'picture' => '图片',
+			'picture' => '图片',
 //			'picture-text' => '图文',
 //			'multi-text' => '多行文本'
 		] as $name => $value):

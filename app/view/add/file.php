@@ -72,7 +72,6 @@ $this->get_header("分享一个文件");
 			}
 			function e_complete(evt) {
 				var data = $.parseJSON(this.response);
-				console.log(data);
 				if (!data.status) {
 					alert('分享失败，请重试:' + data.msg);
 					return true;

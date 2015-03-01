@@ -210,4 +210,26 @@ class DB{
 		return $this->driver->get("share_picture", "*", ['s_id' => $s_id]);
 	}
 
+	/**
+	 * 插入分的图文数据
+	 * @param int $s_id
+	 * @param int $spt_image_width
+	 * @param int $spt_image_height
+	 * @param string $spt_text
+	 * @param int $spt_position
+	 * @return bool
+	 */
+	public function d_share_picture_text_insert($s_id, $spt_image_width, $spt_image_height, $spt_text, $spt_position){
+		return $this->driver->insert("share_picture_text", compact('s_id', 'spt_image_width', 'spt_image_height', 'spt_text', 'spt_position')) !== -1;
+	}
+
+	/**
+	 * 获取图文分享的数据
+	 * @param $s_id
+	 * @return array|bool
+	 */
+	public function d_share_picture_text_get($s_id){
+		return $this->driver->get("share_picture_text", "*", ['s_id' => $s_id]);
+	}
+
 }

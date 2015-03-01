@@ -41,6 +41,10 @@ abstract class Share{
 	 * HTML查看模式
 	 */
 	const VIEW_HTML = 3;
+	/**
+	 * 纯字符串模式
+	 */
+	const VIEW_TEXT = 4;
 
 	const ACTIVE_NORMAL = 0;
 	const ACTIVE_404 = 1;
@@ -293,6 +297,8 @@ abstract class Share{
 				return self::VIEW_REDIRECT;
 			case "html":
 				return self::VIEW_HTML;
+			case "text":
+				return self::VIEW_TEXT;
 			default:
 				return self::VIEW_NORMAL;
 		}

@@ -33,7 +33,7 @@ class ShareParse extends Share{
 
 	/**
 	 * 移除创建对象
-	 * @param int $mid
+	 * @param int  $mid
 	 * @param null $more
 	 * @return false
 	 */
@@ -71,6 +71,9 @@ class ShareParse extends Share{
 				break;
 			case self::TYPE_PICTURE:
 				$share = class_share("Picture", "File");
+				break;
+			case self::TYPE_PICTURE_TEXT:
+				$share = class_share("PictureText", "File");
 				break;
 			default:
 				return false;

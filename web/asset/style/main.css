@@ -1,41 +1,43 @@
-.main-title{
+.main-title {
 	text-shadow: #204d74 1px 1px;
 	text-align: center;
 	margin-top: 30px;
 }
-.main-title a:hover{
+
+.main-title a:hover {
 	text-decoration: none;
 }
 
-.main-share-list{
+.main-share-list {
 	text-align: center;
 	margin: 120px 0;
 	font-size: 2em;
 }
 
-.footer{
+.footer {
 	margin: 30px 0 15px 0;
 	color: #444444;
 	text-align: center;
 	line-height: 0.8;
 }
-.footer .notice{
+
+.footer .notice {
 	font-size: 10px;
 	text-align: right;
 }
 
-.no-found{
+.no-found {
 	margin: 35px;
 }
 
-.share-box{
+.share-box {
 	text-align: center;
 	margin: 30px 0;
 	padding: 40px 0;
 	border: 1px dashed #e0e0e0;
 }
 
-.share-box h2{
+.share-box h2 {
 	margin-top: 0;
 }
 
@@ -43,67 +45,112 @@
 	margin: 15px 0;
 	line-height: 2;
 }
-.share-box #Result p span{
+
+.share-box #Result p span {
 	color: #2b542c;
 }
 
-.share-error{
+.share-error {
 	text-align: center;
 	margin-top: 40px;
 	margin-bottom: 100px;
 }
 
-#ShareText #InputText{
+#ShareText #InputText {
 	width: 100%;
 	max-width: 600px;
 	margin: 10px auto;
 
 }
 
-.share-text-box{
+.share-text-box {
 	padding-top: 15px;
 }
-.share-text-box h3{
+
+.share-text-box h3 {
 	margin: 0 0 15px 0;
 }
-.share-text-box p{
+
+.share-text-box p {
 	line-height: 1.8;
 	text-align: left;
 	padding: 8px 12px;
 	color: #88493d;
 }
 
-.share-file-select-box{
+.share-file-select-box {
 	width: 100%;
 	max-width: 600px;
 	margin: 10px auto;
 	padding: 10px;
 	border: 2px dashed #aaa;
 }
-.share-file-select-box-hover:hover{
+
+.share-file-select-box-hover:hover {
 	background-color: #eee;
 	cursor: pointer;
 }
-.share-file-select-box:hover p{
+
+.share-file-select-box:hover p {
 	color: #333;
 }
-.share-file-select-box p{
+
+.share-file-select-box p {
 	margin: 0;
 	padding: 5px;
 	color: #777;
 }
 
-.share-box-markdown .tab-content{
+.share-box-markdown .tab-content {
 	text-align: left;
 	padding: 5px;
 }
 
-.share-picture-box{
+.share-picture-box {
 	margin: 5px 10px;
 }
-.share-picture-box img{
+
+.share-picture-box img {
 	border: 1px solid #aaa;
 	padding: 1px;
 	display: block;
-	margin:  0 auto;
+	margin: 0 auto;
+}
+
+.picture-text-box-preview {
+	margin-top: 10px;
+	text-align: left;
+	border: dashed 1px #ddd;
+	line-height: 1.5;
+	padding: 8px;
+}
+
+#SharePictureTextData {
+	margin: 5px 10px;
+}
+
+#SharePictureTextData .text {
+	margin: 5px 0;
+}
+
+#SharePictureTextData .text p {
+	text-align: left;
+	line-height: 1.5;
+	margin: 2px;
+	text-indent: 2em;
+}
+
+@media (min-width: 767px) {
+	#SharePictureTextData .image img {
+		width: 100%;
+		max-width: 750px;
+	}
+
+	#SharePictureTextData .image-left {
+		float: left;
+	}
+
+	#SharePictureTextData .image-right {
+		float: right;
+	}
 }

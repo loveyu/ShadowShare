@@ -73,6 +73,7 @@ class Home extends Page{
 										break;
 									case Share::TYPE_FILE:
 									case Share::TYPE_PICTURE:
+									case Share::TYPE_PICTURE_TEXT:
 										/**
 										 * @var $share \ULib\Share\ShareFile
 										 */
@@ -82,6 +83,21 @@ class Home extends Page{
 										} else{
 											$share->activeSet();
 										}
+										break;
+									default:
+										$this->__load_404();
+										break;
+								}
+								break;
+							case Share::VIEW_TEXT:
+								switch($share->getShareType()){
+									case Share::TYPE_PICTURE_TEXT:
+										header("Content-Type: text/plain; charset=utf-8");
+										/**
+										 * @var $share \ULib\Share\SharePictureText
+										 */
+										echo $share->getText();
+										$share->activeSet();
 										break;
 									default:
 										$this->__load_404();
@@ -110,6 +126,10 @@ class Home extends Page{
 									case Share::TYPE_PICTURE:
 										//图片信息为引用方式，不触发
 										$this->__view("share/picture.php", ['share' => $share]);
+										break;
+									case Share::TYPE_PICTURE_TEXT:
+										$this->__view("share/picture-text.php", ['share' => $share]);
+										$share->activeSet();
 										break;
 									default:
 										$this->__load_404();
@@ -149,6 +169,9 @@ class Home extends Page{
 				break;
 			case "picture":
 				$this->__view("add/picture.php");
+				break;
+			case "picture-text":
+				$this->__view("add/picture-text.php");
 				break;
 			default:
 				$this->__load_404();

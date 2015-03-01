@@ -127,6 +127,19 @@ class ShareFile extends Share{
 	}
 
 	/**
+	 * 返回Base64编码的链接
+	 * @return false|string
+	 */
+	public function getBase64Encode(){
+		$name = _RootPath_ . _DATA_FILE_ . "/" . $this->info['sf_save_path'] . $this->info['sf_save_name'];
+		if(!file_exists($name) || !is_readable($name)){
+			return false;
+		}
+		$data = base64_encode(file_get_contents($name));
+		return "data:" . (empty($this->info['sf_type']) ? "application/force-download" : $this->info['sf_type']) . ";base64," . $data;
+	}
+
+	/**
 	 * 返回文件名
 	 * @return string
 	 */

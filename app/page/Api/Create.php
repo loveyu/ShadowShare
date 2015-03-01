@@ -190,4 +190,71 @@ class Create extends RestApi{
 			$this->_set_status(false, 3044, $ex->getMessage());
 		}
 	}
+
+	/**
+	 * 图片和文字分享
+	 */
+	public function picture_text(){
+		if(!$this->_run_check()){
+			return;
+		}
+		if(!isset($_FILES['picture']['error']) || $_FILES['picture']['error'] != 0){
+			$this->_set_status(false, 3051, "上传的文件有误，请重试");
+			return;
+		}
+		$text = $this->__req->post('text');
+		$empty = trim($text);
+		if(empty($empty)){
+			$this->_set_status(false, 3052, "文本分享内容不能为空");
+			return;
+		}
+		$len = mb_strlen($text);
+		if($len > 200 || $len < 5){
+			$this->_set_status(false, 3053, "文本分享内容必须为5到200个字符!");
+			return;
+		}
+		$position = trim($this->__req->post('position'));
+		if(!in_array($position, [
+			"0",
+			//中
+			"1",
+			//左
+			"2",
+			//右
+			"3"
+			//下
+		])
+		){
+			$this->_set_status(false, 3054, "图片对齐方式有误");
+			return;
+		}
+		try{
+			$share = class_share('PictureText', 'File');
+			if($share->create(class_member()->getUid())){
+				if($share->setData([
+					'file' => $_FILES['picture'],
+					'text' => $text,
+					'position' => $position
+				])
+				){
+					$this->_set_status(true, 0);
+					$url = get_url($share->getUname());
+					$this->_set_data([
+						'uname' => $share->getUname(),
+						'url' => $url,
+						'image' => $url . "?m=img",
+						'html' => $url . "?m=html",
+						'text' => $url . "?m=text",
+					]);
+				} else{
+					$share->delete_failed_share();
+					$this->_set_status(false, 3055, '分享数据设置失败');
+				}
+			} else{
+				$this->_set_status(false, 3056, '创建分享失败');
+			}
+		} catch(\Exception $ex){
+			$this->_set_status(false, 3057, $ex->getMessage());
+		}
+	}
 }

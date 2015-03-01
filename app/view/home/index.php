@@ -13,7 +13,7 @@ $this->get_header();
 //			'code' => '代码',
 			'markdown' => 'Markdown',
 			'picture' => '图片',
-//			'picture-text' => '图文',
+			'picture-text' => '图文',
 //			'multi-text' => '多行文本'
 		] as $name => $value):
 			?>

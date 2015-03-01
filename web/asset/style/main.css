@@ -63,7 +63,14 @@
 
 }
 
-.share-text-box {
+#ShareCode #InputText {
+	width: 100%;
+	max-width: 800px;
+	margin: 10px auto;
+
+}
+
+.share-text-box, .share-code-box {
 	padding-top: 15px;
 }
 
@@ -76,6 +83,10 @@
 	text-align: left;
 	padding: 8px 12px;
 	color: #88493d;
+}
+
+.share-code-box pre {
+	text-align: left;
 }
 
 .share-file-select-box {

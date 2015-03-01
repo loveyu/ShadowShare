@@ -17,6 +17,41 @@ class Create extends RestApi{
 	}
 
 	/**
+	 * 网址分享API
+	 */
+	public function url(){
+		if(!$this->_run_check()){
+			return;
+		}
+		$url = trim($this->__req->post('url'));
+		if(!filter_var($url, FILTER_VALIDATE_URL)){
+			$this->_set_status(false, 3001, "URL验证出错");
+			return;
+		}
+		try{
+			$share = class_share('Url');
+			if($share->create(class_member()->getUid())){
+				if($share->setData($url)){
+					$this->_set_status(true, 0);
+					$url = get_url($share->getUname());
+					$this->_set_data([
+						'uname' => $share->getUname(),
+						'url' => $url,
+						'redirect' => $url . "?m=go"
+					]);
+				} else{
+					$share->delete_failed_share();
+					$this->_set_status(false, 3003, '分享数据设置失败');
+				}
+			} else{
+				$this->_set_status(false, 3002, '创建分享失败');
+			}
+		} catch(\Exception $ex){
+			$this->_set_status(false, 3004, $ex->getMessage());
+		}
+	}
+
+	/**
 	 * 文本分享API
 	 */
 	public function text(){
@@ -49,41 +84,6 @@ class Create extends RestApi{
 			}
 		} catch(\Exception $ex){
 			$this->_set_status(false, 3014, $ex->getMessage());
-		}
-	}
-
-	/**
-	 * 网址分享API
-	 */
-	public function url(){
-		if(!$this->_run_check()){
-			return;
-		}
-		$url = trim($this->__req->post('url'));
-		if(!filter_var($url, FILTER_VALIDATE_URL)){
-			$this->_set_status(false, 3001, "URL验证出错");
-			return;
-		}
-		try{
-			$share = class_share('Url');
-			if($share->create(class_member()->getUid())){
-				if($share->setData($url)){
-					$this->_set_status(true, 0);
-					$url = get_url($share->getUname());
-					$this->_set_data([
-						'uname' => $share->getUname(),
-						'url' => $url,
-						'redirect' => $url . "?m=go"
-					]);
-				} else{
-					$share->delete_failed_share();
-					$this->_set_status(false, 3003, '分享数据设置失败');
-				}
-			} else{
-				$this->_set_status(false, 3002, '创建分享失败');
-			}
-		} catch(\Exception $ex){
-			$this->_set_status(false, 3004, $ex->getMessage());
 		}
 	}
 
@@ -255,6 +255,60 @@ class Create extends RestApi{
 			}
 		} catch(\Exception $ex){
 			$this->_set_status(false, 3057, $ex->getMessage());
+		}
+	}
+
+	/**
+	 * 代码分享API
+	 */
+	public function code(){
+		if(!$this->_run_check()){
+			return;
+		}
+		$text = $this->__req->post('code');
+		$empty = trim($text);
+		if(empty($empty)){
+			$this->_set_status(false, 3061, "代码分享内容不能为空");
+			return;
+		}
+
+		try{
+			/**
+			 * @var $share \ULib\Share\ShareCode
+			 */
+			$share = class_share('Code');
+			$lang = trim(strtolower($this->__req->post('lang')));
+			if(empty($lang)){
+				$lang = "plain";
+			}
+			if(!$share->hasLang($lang)){
+				$this->_set_status(false, 3062, "代码语言有误或不存在");
+				return;
+			}
+			if($share->create(class_member()->getUid())){
+				if($share->setData([
+					'code' => $text,
+					'lang' => $lang
+				])
+				){
+					$this->_set_status(true, 0);
+					$url = get_url($share->getUname());
+					$this->_set_data([
+						'uname' => $share->getUname(),
+						'url' => $url,
+						'raw' => $url . "?m=raw",
+						'html' => $url . "?m=html",
+						'script' => $url . "?m=script",
+					]);
+				} else{
+					$share->delete_failed_share();
+					$this->_set_status(false, 3063, '分享数据设置失败');
+				}
+			} else{
+				$this->_set_status(false, 3064, '创建分享失败');
+			}
+		} catch(\Exception $ex){
+			$this->_set_status(false, 3065, $ex->getMessage());
 		}
 	}
 }

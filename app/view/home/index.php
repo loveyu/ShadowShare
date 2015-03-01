@@ -10,7 +10,7 @@ $this->get_header();
 			'url' => '网址',
 			'text' => '文本',
 			'file' => '文件',
-//			'code' => '代码',
+			'code' => '代码',
 			'markdown' => 'Markdown',
 			'picture' => '图片',
 			'picture-text' => '图文',

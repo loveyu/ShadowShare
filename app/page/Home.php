@@ -62,6 +62,15 @@ class Home extends Page{
 										echo $share->getHtml();
 										$share->activeSet();
 										break;
+									case Share::TYPE_CODE:
+										/**
+										 * @var $share \ULib\Share\ShareCode
+										 */
+										header("Content-Type: text/html; charset=utf-8");
+										header("Content-Disposition: inline; filename=" . $share->getUname() . ".html");
+										echo $share->getHtml();
+										$share->activeSet();
+										break;
 									default:
 										$this->__load_404();
 										break;
@@ -70,6 +79,7 @@ class Home extends Page{
 							case Share::VIEW_RAW:
 								switch($share->getShareType()){
 									case Share::TYPE_TEXT:
+									case Share::TYPE_CODE:
 										header("Content-Type: text/plain; charset=utf-8");
 										echo $share->getPrimaryData();
 										$share->activeSet();
@@ -108,6 +118,26 @@ class Home extends Page{
 										echo $share->getText();
 										$share->activeSet();
 										break;
+									case Share::TYPE_CODE:
+										header("Content-Type: text/plain; charset=utf-8");
+										echo $share->getPrimaryData();
+										$share->activeSet();
+										break;
+									default:
+										$this->__load_404();
+										break;
+								}
+								break;
+							case Share::VIEW_SCRIPT:
+								switch($share->getShareType()){
+									case Share::TYPE_CODE:
+										/**
+										 * @var $share \ULib\Share\ShareCode
+										 */
+										$share->setContentType();
+										echo $share->getPrimaryData();
+										$share->activeSet();
+										break;
 									default:
 										$this->__load_404();
 										break;
@@ -122,6 +152,10 @@ class Home extends Page{
 										break;
 									case Share::TYPE_TEXT:
 										$this->__view("share/text.php", ['share' => $share]);
+										$share->activeSet();
+										break;
+									case Share::TYPE_CODE:
+										$this->__view("share/code.php", ['share' => $share]);
 										$share->activeSet();
 										break;
 									case Share::TYPE_FILE:
@@ -169,6 +203,9 @@ class Home extends Page{
 				break;
 			case "text":
 				$this->__view("add/text.php");
+				break;
+			case "code":
+				$this->__view("add/code.php");
 				break;
 			case "file":
 				$this->__view("add/file.php");

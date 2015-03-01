@@ -46,6 +46,11 @@ abstract class Share{
 	 */
 	const VIEW_TEXT = 4;
 
+	/**
+	 * 脚本模式
+	 */
+	const VIEW_SCRIPT = 5;
+
 	const ACTIVE_NORMAL = 0;
 	const ACTIVE_404 = 1;
 	const ACTIVE_DENY = 2;
@@ -299,6 +304,8 @@ abstract class Share{
 				return self::VIEW_HTML;
 			case "text":
 				return self::VIEW_TEXT;
+			case "script":
+				return self::VIEW_SCRIPT;
 			default:
 				return self::VIEW_NORMAL;
 		}

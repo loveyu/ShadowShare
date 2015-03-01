@@ -145,6 +145,26 @@ class DB{
 	}
 
 	/**
+	 * 创建代码内容分享
+	 * @param int    $s_id 基本信息表ID
+	 * @param string $sc_code
+	 * @param string $sc_lang
+	 * @return bool
+	 */
+	public function d_share_code_insert($s_id, $sc_code, $sc_lang){
+		return $this->driver->insert("share_code", compact('s_id', 'sc_code', 'sc_lang')) !== -1;
+	}
+
+	/**
+	 * 获取一条代码分享数据
+	 * @param $s_id
+	 * @return array|bool
+	 */
+	public function d_share_code_get($s_id){
+		return $this->driver->get("share_code", "*", ['s_id' => $s_id]);
+	}
+
+	/**
 	 * 插入文件分享数据
 	 * @param $s_id
 	 * @param $sf_md5
@@ -212,11 +232,11 @@ class DB{
 
 	/**
 	 * 插入分的图文数据
-	 * @param int $s_id
-	 * @param int $spt_image_width
-	 * @param int $spt_image_height
+	 * @param int    $s_id
+	 * @param int    $spt_image_width
+	 * @param int    $spt_image_height
 	 * @param string $spt_text
-	 * @param int $spt_position
+	 * @param int    $spt_position
 	 * @return bool
 	 */
 	public function d_share_picture_text_insert($s_id, $spt_image_width, $spt_image_height, $spt_text, $spt_position){

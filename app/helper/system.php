@@ -313,6 +313,20 @@ function filter_url($url){
 }
 
 /**
+ * 生成OPTION数据
+ * @param array  $value_list
+ * @param string $select
+ * @return string
+ */
+function html_option($value_list, $select){
+	$rt = "";
+	foreach($value_list as $value => $name){
+		$rt .= "<option value=\"{$value}\"" . ($value == $select ? " selected" : "") . ">{$name}</option>";
+	}
+	return $rt;
+}
+
+/**
  * 返回数据库的查询次数
  * @return int
  */

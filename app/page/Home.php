@@ -53,6 +53,15 @@ class Home extends Page{
 										echo $share->getHtml();
 										$share->activeSet();
 										break;
+									case Share::TYPE_PICTURE_TEXT:
+										header("Content-Type: text/html; charset=utf-8");
+										header("Content-Disposition: inline; filename=" . $share->getUname() . ".html");
+										/**
+										 * @var $share \ULib\Share\SharePictureText
+										 */
+										echo $share->getHtml();
+										$share->activeSet();
+										break;
 									default:
 										$this->__load_404();
 										break;

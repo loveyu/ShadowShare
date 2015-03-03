@@ -10,11 +10,24 @@ namespace ULib\Share;
 
 use ULib\Share;
 
+/**
+ * Class ShareCode
+ * @package ULib\Share
+ */
 class ShareCode extends Share{
 
+	/**
+	 * @var string
+	 */
 	private $text = NULL;
+	/**
+	 * @var string
+	 */
 	private $lang = "text";
 
+	/**
+	 * @var array
+	 */
 	protected $lang_map = array(
 		'as3' => array(
 			'name' => 'AS3',
@@ -102,7 +115,7 @@ class ShareCode extends Share{
 		'php' => array(
 			'name' => 'Php',
 			'ex' => 'php',
-			'head' => 'text/plain',
+			'head' => 'text/php',
 		),
 		'plain' => array(
 			'name' => 'Plain',
@@ -191,6 +204,7 @@ class ShareCode extends Share{
 	}
 
 	/**
+	 * 获取当前代码的语言
 	 * @return string
 	 */
 	public function getLang(){
@@ -198,20 +212,34 @@ class ShareCode extends Share{
 	}
 
 	/**
+	 * 获取全部语言列表
 	 * @return array
 	 */
 	public function getLangMap(){
 		return $this->lang_map;
 	}
 
+	/**
+	 * 是否存在某一语言
+	 * @param $lang
+	 * @return bool
+	 */
 	public function hasLang($lang){
 		return isset($this->lang_map[$lang]);
 	}
 
+	/**
+	 * 获取某一语言对应的文件简称
+	 * @param $lang
+	 * @return string
+	 */
 	public function getLangValue($lang){
 		return isset($this->lang_map[$lang]) ? (isset($this->lang_map[$lang]['sn']) ? $this->lang_map[$lang]['sn'] : $this->lang_map[$lang]['name']) : "Plain";
 	}
 
+	/**
+	 * 设置对应代码的头信息
+	 */
 	public function setContentType(){
 		if(isset($this->lang_map[$this->lang])){
 			$map = $this->lang_map[$this->lang];
@@ -226,8 +254,12 @@ class ShareCode extends Share{
 		header("Content-Disposition: inline; filename=" . $this->getUname() . ".{$map['ex']}");
 	}
 
+	/**
+	 * 返回高亮后的代码
+	 * @return string
+	 */
 	public function getHtml(){
-		//TODO 待实现代码高亮的显示
-		return $this->text;
+		//TODO 未处理其他语言
+		return highlight_string($this->text, true);
 	}
 }

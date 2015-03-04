@@ -73,7 +73,8 @@ class ShareMultiText extends Share{
 		if($c < 1){
 			return false;
 		}
-		return parent::create($mid, ['s_share_max' => $c]);
+		//多一次是为防止数据查看完后无法继续查看的问题，该数据为特殊数据
+		return parent::create($mid, ['s_share_max' => $c+1]);
 	}
 
 	/**

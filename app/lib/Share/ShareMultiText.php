@@ -29,6 +29,9 @@ class ShareMultiText extends Share{
 	 */
 	private $now_ip;
 
+	/**
+	 * @var array 最后访问顾客数据
+	 */
 	private $last_visit_data;
 
 	/**
@@ -109,6 +112,9 @@ class ShareMultiText extends Share{
 		return self::ACTIVE_NORMAL;
 	}
 
+	/**
+	 * 重写激活设置操作
+	 */
 	public function activeSet(){
 		if($this->base_object->getMid() === 0 || $this->base_object->getMid() !== class_member()->getUid()){
 			//开始设置访问数据
@@ -163,6 +169,13 @@ class ShareMultiText extends Share{
 			false;
 		}
 		return $this->text[$this->index];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNowIp(){
+		return $this->now_ip;
 	}
 
 }

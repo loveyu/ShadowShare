@@ -80,6 +80,7 @@ class Home extends Page{
 								switch($share->getShareType()){
 									case Share::TYPE_TEXT:
 									case Share::TYPE_CODE:
+									case Share::TYPE_MULTI_TEXT:
 										header("Content-Type: text/plain; charset=utf-8");
 										echo $share->getPrimaryData();
 										$share->activeSet();
@@ -174,6 +175,10 @@ class Home extends Page{
 										$this->__view("share/picture-text.php", ['share' => $share]);
 										$share->activeSet();
 										break;
+									case Share::TYPE_MULTI_TEXT:
+										$this->__view("share/multi-text.php", ['share' => $share]);
+										$share->activeSet();
+										break;
 									default:
 										$this->__load_404();
 										break;
@@ -218,6 +223,9 @@ class Home extends Page{
 				break;
 			case "picture-text":
 				$this->__view("add/picture-text.php");
+				break;
+			case "multi-text":
+				$this->__view("add/multi-text.php");
 				break;
 			default:
 				$this->__load_404();

@@ -150,7 +150,10 @@
 	margin: 2px;
 	text-indent: 2em;
 }
-
+#ShareMultiText{
+	max-width: 700px;
+	margin: 0 auto;
+}
 @media (min-width: 767px) {
 	#SharePictureTextData .image img {
 		width: 100%;

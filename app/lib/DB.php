@@ -252,4 +252,49 @@ class DB{
 		return $this->driver->get("share_picture_text", "*", ['s_id' => $s_id]);
 	}
 
+	/**
+	 * 创建多行文本内容分享
+	 * @param int    $s_id 基本信息表ID
+	 * @param string $smt_text
+	 * @param int    $smt_max
+	 * @param int    $smt_expire
+	 * @return bool
+	 */
+	public function d_share_multi_text_insert($s_id, $smt_text, $smt_max, $smt_expire){
+		return $this->driver->insert("share_multi_text", compact('s_id', 'smt_text', 'smt_max', 'smt_expire')) !== -1;
+	}
+
+	/**
+	 * 获取一条多行文本分享数据
+	 * @param $s_id
+	 * @return array|bool
+	 */
+	public function d_share_multi_text_get($s_id){
+		return $this->driver->get("share_multi_text", "*", ['s_id' => $s_id]);
+	}
+
+	public function d_share_multi_text_update($s_id, $data){
+		return $this->driver->update("share_multi_text", $data, ['s_id' => $s_id]);
+	}
+
+	public function d_share_multi_text_map_insert($s_id, $smtm_ip, $smtm_time, $smt_index, $smtm_count = 0){
+		return $this->driver->insert("share_multi_text_map", compact('s_id', 'smtm_ip', 'smtm_time', 'smt_index', 'smtm_count')) !== -1;
+	}
+
+	/**
+	 * 获取某一IP最后访问的一条记录
+	 * @param int    $s_id
+	 * @param string $smtm_ip
+	 * @return array
+	 */
+	public function d_share_multi_text_map_get_last($s_id, $smtm_ip){
+		return $this->driver->get("share_multi_text_map", "*", [
+			'AND' => compact('s_id', 'smtm_ip'),
+			'ORDER' => 'smtm_time DESC'
+		]);
+	}
+
+	public function d_share_multi_text_map_update_count($s_id, $smtm_ip, $smtm_time){
+		return $this->driver->update("share_multi_text_map", ['smtm_count[+]' => 1], ['AND' => compact('s_id', 'smtm_ip', 'smtm_time')]) == 1;
+	}
 }

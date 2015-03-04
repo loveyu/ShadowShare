@@ -311,4 +311,47 @@ class Create extends RestApi{
 			$this->_set_status(false, 3065, $ex->getMessage());
 		}
 	}
+
+	/**
+	 * 多行文本分享
+	 */
+	public function multi_text(){
+		if(!$this->_run_check()){
+			return;
+		}
+		$text = $this->__req->post('text');
+		$empty = trim($text);
+		if(empty($empty)){
+			$this->_set_status(false, 3071, "文本分享内容不能为空");
+			return;
+		}
+		try{
+			/**
+			 * @var $share \ULib\Share\ShareMultiText
+			 */
+			$share = class_share('MultiText');
+			if(!$share->setText($text)){
+				$this->_set_status(false, 3072, '没有任何可用的分享数据');
+				return;
+			}
+			if($share->create(class_member()->getUid())){
+				if($share->setData($text)){
+					$this->_set_status(true, 0);
+					$url = get_url($share->getUname());
+					$this->_set_data([
+						'uname' => $share->getUname(),
+						'url' => $url,
+						'raw' => $url . "?m=raw"
+					]);
+				} else{
+					$share->delete_failed_share();
+					$this->_set_status(false, 3073, '分享数据设置失败');
+				}
+			} else{
+				$this->_set_status(false, 3074, '创建分享失败');
+			}
+		} catch(\Exception $ex){
+			$this->_set_status(false, 3075, $ex->getMessage());
+		}
+	}
 }

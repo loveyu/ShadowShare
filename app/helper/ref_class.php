@@ -88,7 +88,11 @@ function class_session(){
 	$session = $lib->using('CSession');
 	if($session === false){
 		$lib->load('session');
-		$session = new \CLib\Session();
+
+		$session = new \CLib\Session('Local', [
+			'domain' => get_top_domain(2),
+			'path' => '/'
+		]);
 		$lib->add("CSession", $session);
 	}
 	return $session;

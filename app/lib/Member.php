@@ -21,13 +21,14 @@ class Member{
 	private $cookie_domain_callback;
 
 	public function __construct(){
-		$this->autoLogin();
+		//必须先定义，在autoLogin中有调用
 		$this->cookie_domain_callback = function ($domain){
 			if(preg_match("/[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/", $domain, $match) == 1){
 				return $match[0];
 			}
 			return $domain;
 		};
+		$this->autoLogin();
 	}
 
 	private function autoLogin(){
@@ -42,7 +43,7 @@ class Member{
 			$this->m_avatar = $member['m_avatar'];
 		} else{
 			$token = req()->cookie('token');//包含用户ID和用户登录验证数据
-			if($token === NULL || strlen($token) < 40 || strpos("\t", $token) < 1){
+			if($token === NULL || strlen($token) < 40 || strpos($token, "\t") < 1){
 				//TOKEN由ID和40位随机字符组成
 				return;
 			}

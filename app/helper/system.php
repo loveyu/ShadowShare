@@ -151,6 +151,31 @@ function list2keymap($list, $key, $value){
 }
 
 /**
+ * 获取域名的最顶级
+ * @param int $top_length 取域名的长度
+ * @return string
+ */
+function get_top_domain($top_length = 2){
+	$domain = u()->getUriInfo()->getHttpHost();
+	if(preg_match("/^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$/", $domain) == 1){
+		//匹配IP直接返回
+		return $domain;
+	}
+	$p = [];
+	for($i = 0; $i < $top_length; $i++){
+		$p[] = "[a-zA-Z0-9-]+";
+	}
+	if($top_length < 1){
+		//错误的域名
+		return $domain;
+	}
+	if(preg_match("/" . implode("\\.", $p) . "$/", $domain, $match) == 1){
+		return $match[0];
+	}
+	return $domain;
+}
+
+/**
  * 将数据列表转为KeyMap，保留键名
  * @param array        $list
  * @param string|array $value

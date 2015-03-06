@@ -34,7 +34,7 @@ class Home extends Page{
 
 	public function logout(){
 		class_member()->logout();
-		redirect([],'refresh',302,false);
+		redirect([], 'refresh', 302, false);
 	}
 
 	public function login(){

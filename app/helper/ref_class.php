@@ -74,3 +74,41 @@ function class_member(){
 	}
 	return $member;
 }
+
+/**
+ * 获取Session对象
+ * @return \CLib\Session
+ */
+function class_session(){
+	static $session = NULL;
+	if($session !== NULL){
+		return $session;
+	}
+	$lib = c_lib();
+	$session = $lib->using('CSession');
+	if($session === false){
+		$lib->load('session');
+		$session = new \CLib\Session();
+		$lib->add("CSession", $session);
+	}
+	return $session;
+}
+
+/**
+ * 获取Cookie对象
+ * @return \CLib\Cookie
+ */
+function class_cookie(){
+	static $cookie = NULL;
+	if($cookie !== NULL){
+		return $cookie;
+	}
+	$lib = c_lib();
+	$cookie = $lib->using('CCookie');
+	if($cookie === false){
+		$lib->load('cookie');
+		$cookie = new \CLib\Cookie(cfg()->get('cookie', 'enable'), cfg()->get('cookie', 'key'));
+		$lib->add("CCookie", $cookie);
+	}
+	return $cookie;
+}

@@ -168,3 +168,15 @@
 		float: right;
 	}
 }
+
+
+.login{
+	margin: 55px 20px;
+}
+#GoogleLoginButton{
+	margin-top: 50px;
+	text-align: center;
+}
+#GoogleLoginButton img{
+	width: 180px;
+}

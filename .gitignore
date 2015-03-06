@@ -5,3 +5,4 @@ app/cache/
 app/log/*.log
 test/
 data/file/*/
+config/oauth2.php

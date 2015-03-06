@@ -17,8 +17,26 @@ class Home extends Page{
 	}
 
 	public function main(){
-		header("Content-Type: text/plain; charset=utf-8");
-		echo "Building!";
+		$member = class_member();
+		if($member->getLoginStatus()){
+			header("Content-Type: text/plain; charset=utf-8");
+			echo $member->getName(), "\n";
+			echo $member->getEmail(), "\n";
+			echo $member->getAvatar(), "\n";
+		} else{
+			redirect([
+				'Home',
+				'login'
+			]);
+		}
+	}
+
+	public function login(){
+		if(func_num_args() > 0){
+			$this->__load_404();
+			return;
+		}
+		$this->__view("my/login.php");
 	}
 
 	public function not_found(){

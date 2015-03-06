@@ -138,9 +138,9 @@ class Page extends \Core\Page{
 
 	public function getTitle(){
 		if(empty($this->title)){
-			return "长大俱乐部 - 阅后即隐，分享一小会";
+			return "阅后即隐 - 分享一小会";
 		} else{
-			return $this->title . " | 长大俱乐部";
+			return $this->title . " | 阅后即隐";
 		}
 	}
 

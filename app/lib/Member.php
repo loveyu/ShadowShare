@@ -18,9 +18,16 @@ class Member{
 	private $m_name;
 	private $m_email;
 	private $m_avatar;
+	private $cookie_domain_callback;
 
 	public function __construct(){
 		$this->autoLogin();
+		$this->cookie_domain_callback = function ($domain){
+			if(preg_match("/[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/", $domain, $match) == 1){
+				return $match[0];
+			}
+			return $domain;
+		};
 	}
 
 	private function autoLogin(){
@@ -83,8 +90,22 @@ class Member{
 		$token = salt(40);
 		if($this->getDao()->update_token($this->m_id, $token, NOW_TIME + 7 * 86400)){
 			//Cookie有效期7天
+			$index = hook()->add("Cookie_domain", $this->cookie_domain_callback);
 			class_cookie()->set('token', $this->m_id . "\t" . $token, NOW_TIME + 7 * 86400);
+			hook()->remove("Cookie_domain", $index);
 		}
+	}
+
+
+	/**
+	 * 销毁session和Cookie退出登录
+	 * @throws \Exception
+	 */
+	public function logout(){
+		class_session()->destroy();
+		$index = hook()->add("Cookie_domain", $this->cookie_domain_callback);
+		class_cookie()->del('token');
+		hook()->remove("Cookie_domain", $index);
 	}
 
 

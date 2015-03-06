@@ -23,12 +23,18 @@ class Home extends Page{
 			echo $member->getName(), "\n";
 			echo $member->getEmail(), "\n";
 			echo $member->getAvatar(), "\n";
+			echo "页面加载", c()->getTimer()->get_second(), " 秒， 数据库查询 ", get_db_query_count(), " 次。\n";
 		} else{
 			redirect([
 				'Home',
 				'login'
 			]);
 		}
+	}
+
+	public function logout(){
+		class_member()->logout();
+		redirect([],'refresh',302,false);
 	}
 
 	public function login(){

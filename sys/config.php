@@ -7,20 +7,10 @@ if(PHP_VERSION < 5.4){
 date_default_timezone_set("PRC");
 
 /**
- * 程序版本
- */
-define("_VERSION_", "0.0.1");
-
-/**
- * 资源文件版本
- */
-define("_SRC_VERSION_", "20140901");
-
-/**
  * 定义唯一名称
  * 当修改语言标示后需要修改才名称
  */
-define("_AppName_", "Student");
+define("_AppName_", "Yin");
 
 /**
  * 调试模式，基本未使用
@@ -40,12 +30,12 @@ define('ROUTER_SPLIT_CHAR', '/');
 /**
  * COOKIE加密密钥
  */
-define('COOKIE_KEY', 'xS/087N*+O:JThghdffhjrkop6765856grgg$K<^fds@@L`wh');
+define('COOKIE_KEY', 'y[-^ZCIy1&KQ=]gUDYWev@vW[#;vRN@o+q{?1Ae}p58A#\'nHe~');
 
 /**
  * COOKIE前缀
  */
-define('COOKIE_PREFIX', 'SM_');
+define('COOKIE_PREFIX', 'cd_');
 
 /**
  * 系统根目录，对应着包含sys,app,install的目录，需要修改时可以调整该目录参数，一般调整整个系统文件结构，无需改变任何内容

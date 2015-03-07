@@ -12,4 +12,8 @@ return [
 					  PDO::ATTR_TIMEOUT => 5
 		]
 	],
+	'register' => [
+		'status' => 'open',
+		'login_form' => 'open'
+	]
 ];

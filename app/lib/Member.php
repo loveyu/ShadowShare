@@ -85,6 +85,62 @@ class Member{
 	}
 
 	/**
+	 * 使用表单登录
+	 * @param $email
+	 * @param $password_hash
+	 * @return bool
+	 */
+	public function formLogin($email, $password_hash){
+		$data = $this->getDao()->get_base_info_by_email($email);
+		if(!isset($data['m_email']) || $data['m_email'] != $email){
+			$this->_error = "未找到当前用户";
+			return false;
+		}
+		if(salt_hash($password_hash, $data['m_salt']) !== $data['m_password']){
+			$this->_error = "密码不正确";
+			return false;
+		}
+		$this->oauth2login($data['m_id'], "form");
+		return true;
+	}
+
+
+	/**
+	 * @param $email
+	 * @return bool
+	 */
+	public function PwdResetCodeSend($email){
+		if(!$this->getDao()->has_email($email)){
+			$this->_error = "用户未找到";
+			return false;
+		}
+		$data = [
+			'email' => $email,
+			'code' => md5(salt())
+		];
+		class_session()->set('password_reset', $data);
+		return true;
+	}
+
+	public function PwdReset($email, $code, $pwd_hash){
+		$data = class_session()->get('password_reset');
+		if(!isset($data['email']) || $data['email'] != $email || $data['code'] != $code){
+			$this->_error = "数据验证失败，请重试";
+			return false;
+		}
+		$salt = salt(12);
+		if($this->getDao()->update_by_email($email, [
+				'm_salt' => $salt,
+				'm_password' => salt_hash($pwd_hash, $salt)
+			]) === 1
+		){
+			return true;
+		}
+		$this->_error = "更新失败，数据库异常";
+		return false;
+	}
+
+	/**
 	 * 更新当前Token
 	 */
 	private function setToken(){
@@ -150,7 +206,7 @@ class Member{
 
 	/**
 	 * 开始自动登录，设置完成后自动跳转
-	 * @param int    $login_id
+	 * @param int $login_id
 	 * @param string $type
 	 */
 	public function oauth2login($login_id, $type){
@@ -192,7 +248,34 @@ class Member{
 	 * @return int
 	 */
 	public function register($name, $email, $avatar){
+		if($this->getDao()->has_email($email)){
+			$this->_error = "当前邮箱已经被注册";
+			return false;
+		}
 		$uid = $this->getDao()->insert($name, $email, $avatar);
+		if($uid > 0){
+			return $uid;
+		} else{
+			$this->_error = "当前用户无法注册，请稍后再试";
+			return false;
+		}
+	}
+
+	/**
+	 * 通过密码注册
+	 * @param string $name
+	 * @param string $email
+	 * @param string $password 经过HASH之后的密码值
+	 * @return bool|int
+	 */
+	public function registerByPassword($name, $email, $password){
+		if($this->getDao()->has_email($email)){
+			$this->_error = "当前邮箱已经被注册";
+			return false;
+		}
+		$salt = salt(12);
+		$pwd = salt_hash($password, $salt);
+		$uid = $this->getDao()->insert($name, $email, $this->createAvatarStore("rand", "default"), $salt, $pwd);
 		if($uid > 0){
 			return $uid;
 		} else{

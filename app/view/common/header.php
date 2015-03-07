@@ -21,4 +21,4 @@ header("Content-Type: text/html; charset=utf-8");
 </head>
 <body>
 <div class="container">
-	<h1 class="main-title"><a href="/">阅后即隐，分享一小会</a></h1>
+	<h1 class="main-title"><a href="/">阅后即隐，分享一小会</a><small class="btn-sm">Beta</small></h1>

@@ -62,6 +62,25 @@ class Dao{
 	}
 
 	/**
+	 * 获取最近的一条记录
+	 * @param int $email
+	 * @return array|bool
+	 */
+	public function get_base_info_by_email($email){
+		return $this->driver->get("member", '*', ['m_email' => $email]);
+	}
+
+	/**
+	 * 通过Email更新数据
+	 * @param $email
+	 * @param $data
+	 * @return int
+	 */
+	public function update_by_email($email, $data){
+		return $this->driver->update("member", $data, ['m_email' => $email]);
+	}
+
+	/**
 	 * 更新用户Token
 	 * @param int    $m_id
 	 * @param string $m_login_token
@@ -70,5 +89,14 @@ class Dao{
 	 */
 	public function update_token($m_id, $m_login_token, $m_login_expire){
 		return $this->driver->update("member", compact('m_login_token', 'm_login_expire'), compact('m_id')) === 1;
+	}
+
+	/**
+	 * 判断某个邮箱是否已经注册
+	 * @param string $email
+	 * @return bool
+	 */
+	public function has_email($email){
+		return $this->driver->has("member", ['m_email' => $email]);
 	}
 }

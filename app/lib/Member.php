@@ -166,8 +166,12 @@ class Member{
 	}
 
 
+	/**
+	 * 此处返回Int类型值，用于全等于判断
+	 * @return int
+	 */
 	public function getUid(){
-		return $this->m_id;
+		return intval($this->m_id);
 	}
 
 	public function getLoginStatus(){
@@ -189,24 +193,8 @@ class Member{
 	}
 
 	/**
-	 * 获取当前头像
-	 * @param int $size
-	 * @return string
-	 */
-	public function getAvatar($size = 50){
-		list($type, $value) = explode("\t", $this->m_avatar);
-		switch($type){
-			case "google":
-				return $value . "?sz=" . $size;
-			default:
-				return $value;
-		}
-	}
-
-
-	/**
 	 * 开始自动登录，设置完成后自动跳转
-	 * @param int $login_id
+	 * @param int    $login_id
 	 * @param string $type
 	 */
 	public function oauth2login($login_id, $type){
@@ -313,4 +301,21 @@ class Member{
 	public function createAvatarStore($data, $type){
 		return $type . "\t" . $data;
 	}
+
+	/**
+	 * 获取当前头像
+	 * @param int $size
+	 * @return string
+	 */
+	public function getAvatar($size = 50){
+		list($type, $value) = explode("\t", $this->m_avatar);
+		switch($type){
+			case "google":
+				return $value . "?sz=" . $size;
+			case "default":
+				return "//www.loveyu.org/rand_avatar.php?size=" . $size;
+		}
+		return $value;
+	}
+
 }

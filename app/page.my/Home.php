@@ -20,9 +20,9 @@ class Home extends Page{
 		$member = class_member();
 		if($member->getLoginStatus()){
 			header("Content-Type: text/plain; charset=utf-8");
-			echo $member->getName(), "\n";
-			echo $member->getEmail(), "\n";
-			echo $member->getAvatar(), "\n";
+			echo "好了，“", $member->getName(), "”你已经登录，这里还没做完，现在你分享的内容会为你保存了。\n";
+			echo "邮箱：", $member->getEmail(), "\n";
+			echo "头像：", $member->getAvatar(), "\n";
 			echo "页面加载", c()->getTimer()->get_second(), " 秒， 数据库查询 ", get_db_query_count(), " 次。\n";
 		} else{
 			redirect([

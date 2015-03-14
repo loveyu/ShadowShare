@@ -366,3 +366,43 @@ function get_db_query_count(){
 		return $db->getDriver()->get_query_count();
 	}
 }
+
+/**
+ * 获取控制域名的列表
+ * @param string $index
+ * @return array
+ */
+function get_url_map($index = ''){
+	static $cfg = NULL;
+	if($cfg === NULL){
+		$cfg = [
+			'root' => '',
+			//主域名,如changda.club,不设置取一个顶级域名
+			'home' => '%ROOT%',
+			//当前首页的域名
+			'api' => '%ROOT%/Api',
+			//API的域名地址
+			'my' => 'my.%ROOT%'
+			//用户中心的域名
+		];
+		$cfg2 = cfg()->get('url_map_host');
+		$cfg = array_merge($cfg, is_array($cfg2) ? $cfg2 : []);
+		if(empty($cfg['root'])){
+			if(preg_match("/[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/", u()->getUriInfo()->getHttpHost(), $match) == 1){
+				$cfg['root'] = $match[0];
+			} else{
+				$cfg['root'] = u()->getUriInfo()->getHttpHost();
+			}
+		}
+		foreach(array_keys($cfg) as $v){
+			$cfg[$v] = str_replace("%ROOT%", $cfg['root'], $cfg[$v]);
+		}
+		foreach(array_keys($cfg) as $v){
+			$cfg[$v] = (is_ssl() ? "https://" : "http://") . preg_replace("/[\\/]{1,}/", "/", $cfg[$v] . "/");
+		}
+	}
+	if(!empty($index)){
+		return isset($cfg[$index]) ? $cfg[$index] : "";
+	}
+	return $cfg;
+}

@@ -106,7 +106,7 @@ class RestApi extends \Core\Page{
 
 	/**
 	 * 设置要返回的数据
-	 * @param mixed  $data
+	 * @param mixed $data
 	 */
 	protected function _set_data($data){
 		if(!$this->status){
@@ -171,6 +171,21 @@ class RestApi extends \Core\Page{
 			$this->result['msg'] = $error_msg;
 			return false;
 		}
+	}
+
+	/**
+	 * 获取跨转请求允许地址
+	 * @return string
+	 */
+	protected function _origin(){
+		$host = array_unique(array_map(function ($url){
+			$p = parse_url($url);
+			return $p['scheme'] . "://" . $p['host'] . ((isset($p['port']) && !empty($p['port'])) ? ":{$p['port']}" : "");
+		}, get_url_map()));
+		if(isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $host)){
+			return $_SERVER['HTTP_ORIGIN'];
+		}
+		return implode(" ", $host);
 	}
 
 	/**

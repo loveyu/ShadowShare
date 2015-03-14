@@ -15,5 +15,11 @@ return [
 	'register' => [
 		'status' => 'open',
 		'login_form' => 'open'
-	]
+	],
+	'url_map_host'=>[//用于前端的地址分配
+		'root'=>'',//主域名,如changda.club,不设置取一个顶级域名
+		'home'=>'%ROOT%',//当前首页的域名
+		'api'=>'%ROOT%/Api',//API的域名地址
+		'my'=>'my.%ROOT%'//用户中心的域名
+	],
 ];

@@ -15,10 +15,16 @@ header("Content-Type: text/html; charset=utf-8");
 	<link rel="stylesheet" href="<?php echo $this->get_asset('style/main.css'); ?>"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<script>
-		var BASE_URL = <?php echo json_encode(get_url(''))?>;
+		var URL_MAP = <?php echo json_encode(get_url_map())?>;
 	</script>
-	<?php header_hook();?>
+	<script src="<?php echo $this->get_asset('style/main.js') ?>"></script>
+	<?php header_hook(); ?>
 </head>
 <body>
 <div class="container">
-	<h1 class="main-title"><a href="/">阅后即隐，分享一小会</a><small class="btn-sm">Beta</small></h1>
+	<div id="Header">
+		<h1 class="main-title"><a href="<?php echo get_url_map('home')?>">阅后即隐，分享一小会</a>
+			<small class="btn-sm">Beta</small>
+		</h1>
+		<div class="login_status"><a href="<?php echo get_url_map('my') ?>">登陆/注册</a></div>
+	</div>

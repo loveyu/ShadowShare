@@ -188,3 +188,11 @@
 #GoogleLoginButton img{
 	width: 180px;
 }
+
+
+.member .main-title{
+	text-align: left;
+}
+.member .no-found{
+	margin-bottom: 150px;
+}

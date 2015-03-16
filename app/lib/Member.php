@@ -313,7 +313,7 @@ class Member{
 			case "google":
 				return $value . "?sz=" . $size;
 			case "default":
-				return "//www.loveyu.org/rand_avatar.php?size=" . $size;
+				return get_url_map("my")."Home/avatar_rand?size=" . $size;
 		}
 		return $value;
 	}

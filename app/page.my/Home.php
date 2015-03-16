@@ -13,17 +13,23 @@ use ULib\Page;
 class Home extends Page{
 
 	function __construct(){
+		$this->header_view_file = "common/my_header.php";
+		$this->footer_view_file = "common/my_footer.php";
 		parent::__construct();
+	}
+
+	function avatar_rand(){
+		$this->__view("my/rand_avatar.php");
 	}
 
 	public function main(){
 		$member = class_member();
 		if($member->getLoginStatus()){
-			header("Content-Type: text/plain; charset=utf-8");
-			echo "好了，“", $member->getName(), "”你已经登录，这里还没做完，现在你分享的内容会为你保存了。\n";
-			echo "邮箱：", $member->getEmail(), "\n";
-			echo "头像：", $member->getAvatar(), "\n";
-			echo "页面加载", c()->getTimer()->get_second(), " 秒， 数据库查询 ", get_db_query_count(), " 次。\n";
+			$this->__view("member/home.php", [
+				'name' => $member->getName(),
+				'email' => $member->getEmail(),
+				'avatar'=>$member->getAvatar()
+			]);
 		} else{
 			redirect([
 				'Home',

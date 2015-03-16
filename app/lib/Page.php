@@ -18,6 +18,9 @@ class Page extends \Core\Page{
 	private static $_header = [];
 	private static $_footer = [];
 
+	protected $header_view_file = "common/header.php";
+	protected $footer_view_file = "common/footer.php";
+
 	function __construct(){
 		parent::__construct();
 		$hook = $this->__core->getHook();
@@ -53,7 +56,7 @@ class Page extends \Core\Page{
 				$this->_set_header($info['data'], 'data');
 			}
 		}
-		$this->__view("common/header.php");
+		$this->__view($this->header_view_file);
 	}
 
 	protected function _set_header($data, $type = 'data'){
@@ -124,7 +127,7 @@ class Page extends \Core\Page{
 		if(isset($info['data'])){
 			$this->_set_footer($info['data'], 'data');
 		}
-		$this->__view("common/footer.php");
+		$this->__view($this->footer_view_file);
 	}
 
 	/**

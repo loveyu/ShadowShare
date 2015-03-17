@@ -21,8 +21,33 @@
 
 .main-share-list {
 	text-align: center;
-	margin: 120px 0;
-	font-size: 2em;
+	margin: 60px 0;
+	font-size: 1.3em;
+}
+
+.main-share-list > div {
+	padding: 0;
+}
+
+@media (max-width: 767px) {
+	.main-share-list > .col-xs-3 {
+		width: 50%;
+	}
+}
+
+.main-share-list a {
+	display: block;
+	border: dashed 1px #e0e0e0;
+	padding: 18px 0;
+	margin: 4px;
+}
+
+.main-share-list a:hover {
+	background-color: #f7f7f7;
+}
+
+.main-share-list a:hover, .main-share-list a:active, .main-share-list a:link {
+	text-decoration: none;
 }
 
 .footer {
@@ -234,6 +259,13 @@
 	color: #008200;
 }
 
+@media (max-width: 767px) {
+	/* 调整宽度为50% */
+	.box-sc-share {
+		width: 50%;
+	}
+}
+
 .my-list-share {
 	margin: 15px 4px;
 }
@@ -274,6 +306,7 @@ ul.my-list-share .less > span {
 ul.my-list-share .password {
 	margin-left: 15px;
 }
+
 ul.my-list-share .time {
 	font-size: 0.8em;
 }

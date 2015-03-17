@@ -4,7 +4,7 @@
  */
 $this->get_header();
 ?>
-	<div class="main-share-list">
+	<div class="main-share-list row">
 		<?php
 		foreach([
 			'url' => '网址',
@@ -17,7 +17,9 @@ $this->get_header();
 			'multi-text' => '多行文本'
 		] as $name => $value):
 			?>
-			<a href="<?php echo get_url('add',$name)?>" class="label label-primary"><?php echo $value?></a>
+			<div class="col-xs-3">
+				<a href="<?php echo get_url('add', $name)?>"><?php echo $value?></a>
+			</div>
 		<?php
 		endforeach;
 		?>

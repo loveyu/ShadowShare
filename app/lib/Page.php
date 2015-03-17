@@ -148,9 +148,35 @@ class Page extends \Core\Page{
 	}
 
 	public function get_bootstrap($file, $version = '3.3.1', $cache_code = ''){
+		$cdn = cfg()->get('cdn_list', 'bootstrap');
+		if(!empty($cdn)){
+			return $cdn . "/" . $file;
+		}
 		return $this->get_asset("bootstrap/{$version}/{$file}", $cache_code);
 	}
 
+	/**
+	 * 优先通过CDN读取，否则通过本地读取
+	 * @param string $cdn_file
+	 * @param string $cdn_name
+	 * @param string $local_replace
+	 * @param string $cache_code
+	 * @return string
+	 */
+	public function get_cdn($cdn_file, $cdn_name, $local_replace = '', $cache_code = ''){
+		$cdn_list = cfg()->get('cdn_list');
+		if(!isset($cdn_list[$cdn_name])){
+			return $this->get_asset($local_replace, $cache_code);
+		}
+		return $cdn_list[$cdn_name] . "/" . $cdn_file;
+	}
+
+	/**
+	 * 读取资源文件
+	 * @param  string $file
+	 * @param string  $cache_code
+	 * @return string
+	 */
 	public function get_asset($file, $cache_code = ''){
 		return get_asset($file, $cache_code);
 	}

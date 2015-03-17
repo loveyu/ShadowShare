@@ -23,5 +23,5 @@ var MainObj = {
 	}
 };
 jQuery(function ($) {
-	MainObj.loginStatus($);
+	if (typeof IS_LOGIN == "undefined" || !IS_LOGIN)MainObj.loginStatus($);
 });

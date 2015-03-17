@@ -8,6 +8,7 @@
  */
 $this->get_header("用户登录");
 ?>
+	<h3 class="text-center">用户登录</h3>
 	<div class="register" style="margin: 20px auto;max-width: 500px">
 		<form action="<?php echo get_url('Home', 'login_form', 'post') ?>" method="post">
 			<fieldset>
@@ -19,7 +20,8 @@ $this->get_header("用户登录");
 
 					<div class="input-group">
 						<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-						<input type="email" class="form-control" name="email" value="<?php echo req()->post('email')?>" id="InputEmail" placeholder="用户邮箱">
+						<input type="email" class="form-control" name="email" value="<?php echo req()->post('email') ?>" id="InputEmail"
+							   placeholder="用户邮箱">
 					</div>
 				</div>
 				<div class="form-group">

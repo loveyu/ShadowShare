@@ -19,7 +19,7 @@ $this->get_header("Markdown分享");
 			<!-- Tab panes -->
 			<div class="tab-content">
 				<div role="tabpanel" class="tab-pane" id="m_markdown">
-					<pre><code lang="markdown"><?php echo $__share->getPrimaryData() ?></code></pre>
+					<pre><code lang="markdown"><?php echo htmlspecialchars($__share->getPrimaryData()) ?></code></pre>
 				</div>
 				<div role="tabpanel" class="tab-pane active" id="m_html"><?php echo $__share->getHtml() ?></div>
 			</div>

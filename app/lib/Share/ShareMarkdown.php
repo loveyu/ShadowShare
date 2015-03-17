@@ -61,7 +61,7 @@ class ShareMarkdown extends Share{
 	public function getHtml(){
 		lib()->load('Markdown/Parsedown', 'Xss/XssHtml');
 		$parse = new Parsedown();
-		$xss = new XssHtml($parse->text($this->markdown));
+		$xss = new XssHtml($parse->text(htmlspecialchars($this->markdown)));
 		return $xss->getHtml();
 	}
 }

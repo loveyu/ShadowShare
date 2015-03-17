@@ -9,6 +9,7 @@ namespace UView;
 
 
 use ULib\Page;
+use ULib\ShareList;
 
 class Home extends Page{
 
@@ -25,16 +26,19 @@ class Home extends Page{
 	public function main(){
 		$member = class_member();
 		if($member->getLoginStatus()){
+			lib()->load('ShareList');
+			$share_list = new ShareList($member->getUid());
 			$this->__view("member/home.php", [
 				'name' => $member->getName(),
 				'email' => $member->getEmail(),
-				'avatar'=>$member->getAvatar()
+				'avatar' => $member->getAvatar(),
+				'count' => $share_list->analyse()
 			]);
 		} else{
 			redirect([
 				'Home',
 				'login'
-			]);
+			], 'refresh', 302, false);
 		}
 	}
 

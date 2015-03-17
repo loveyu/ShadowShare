@@ -3,15 +3,18 @@
 	text-align: center;
 	margin-top: 30px;
 }
-.login_status{
+
+.login_status {
 	text-align: right;
 }
-.login_status img{
+
+.login_status img {
 	width: 25px;
 	height: 25px;
 	border: none;
 	border-radius: 25px;
 }
+
 .main-title a:hover {
 	text-decoration: none;
 }
@@ -158,10 +161,12 @@
 	margin: 2px;
 	text-indent: 2em;
 }
-#ShareMultiText{
+
+#ShareMultiText {
 	max-width: 700px;
 	margin: 0 auto;
 }
+
 @media (min-width: 767px) {
 	#SharePictureTextData .image img {
 		width: 100%;
@@ -177,22 +182,103 @@
 	}
 }
 
-
-.login{
+.login {
 	margin: 55px 20px;
 }
-#GoogleLoginButton{
+
+#GoogleLoginButton {
 	margin-top: 50px;
 	text-align: center;
 }
-#GoogleLoginButton img{
+
+#GoogleLoginButton img {
 	width: 180px;
 }
 
-
-.member .main-title{
+.member .main-title {
 	text-align: left;
 }
-.member .no-found{
+
+.member .no-found {
 	margin-bottom: 150px;
+}
+
+.login_status {
+	margin-bottom: 5px;
+}
+
+.box-sc-row {
+	margin: 15px 0 40px 0;
+}
+
+.box-sc-share a {
+	display: block;
+	margin: 5px;
+	padding: 15px 5px;
+	border: dashed 1px #eee;
+	text-align: center;
+	background-color: #fefefe;
+}
+
+.box-sc-share a:hover {
+	background-color: #f0f0f0;
+
+}
+
+.box-sc-share a:hover, .box-sc-share a:active, .box-sc-share a:link {
+	text-decoration: none;
+}
+
+.box-sc-share span.count {
+	font-size: 2em;
+	color: #008200;
+}
+
+.my-list-share {
+	margin: 15px 4px;
+}
+
+ul.my-list-share li {
+	border-left: 4px solid #007deb;
+	margin: 8px 0;
+	background-color: #f7f7f7;
+	padding: 5px;
+}
+
+ul.my-list-share li:nth-child(odd) {
+	background-color: #f0f0f0;
+	border-left-color: #00d300;
+}
+
+ul.my-list-share li:hover {
+	background-color: #e0e0e0;
+	border-left-color: #fe6d6d;
+}
+
+ul.my-list-share li > p {
+	margin: 0;
+	padding: 0;
+	line-height: 1.5;
+}
+
+ul.my-list-share .less {
+	margin-left: 15px;
+}
+
+ul.my-list-share .less > span {
+	font-size: 1.5em;
+	color: #008200;
+	font-weight: bold;
+}
+
+ul.my-list-share .password {
+	margin-left: 15px;
+}
+ul.my-list-share .time {
+	font-size: 0.8em;
+}
+
+ul.my-list-share .password > span {
+	color: #bababa;
+	font-style: italic;
 }

@@ -128,9 +128,10 @@ function _hash($str, $raw_output = false){
  * @param array        $list
  * @param string       $key
  * @param string|array $value
+ * @param callback     $value_callback
  * @return array
  */
-function list2keymap($list, $key, $value){
+function list2keymap($list, $key, $value, $value_callback = NULL){
 	if(!isset($list[0])){
 		return [];
 	}
@@ -146,6 +147,9 @@ function list2keymap($list, $key, $value){
 		foreach($list as $v){
 			$rt[$v[$key]] = $v[$value];
 		}
+	}
+	if(is_callable($value_callback)){
+		$rt = array_map($value_callback, $rt);
 	}
 	return $rt;
 }
@@ -179,9 +183,10 @@ function get_top_domain($top_length = 2){
  * 将数据列表转为KeyMap，保留键名
  * @param array        $list
  * @param string|array $value
+ * @param callback     $value_callback
  * @return array
  */
-function list2keymapSK($list, $value){
+function list2keymapSK($list, $value, $value_callback){
 	if(!is_array($list)){
 		return [];
 	}
@@ -197,6 +202,9 @@ function list2keymapSK($list, $value){
 		foreach($list as $key => $v){
 			$rt[$key] = $v[$value];
 		}
+	}
+	if(is_callable($value_callback)){
+		$rt = array_map($value_callback, $rt);
 	}
 	return $rt;
 }

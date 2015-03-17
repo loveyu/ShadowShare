@@ -9,6 +9,10 @@ namespace ULib\Member;
 
 use CLib\Sql;
 
+/**
+ * Class Dao 用户操作类
+ * @package ULib\Member
+ */
 class Dao{
 	/**
 	 * @var Sql

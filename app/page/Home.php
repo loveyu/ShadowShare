@@ -34,6 +34,7 @@ class Home extends Page{
 								//强制跳转模式
 								switch($share->getShareType()){
 									case Share::TYPE_URL:
+										class_member();//优先调用用户登录类
 										redirect($share->getPrimaryData(), 'refresh', 302, false);
 										$share->activeSet();
 										break;
@@ -47,6 +48,7 @@ class Home extends Page{
 									case Share::TYPE_MARKDOWN:
 										header("Content-Type: text/html; charset=utf-8");
 										header("Content-Disposition: inline; filename=" . $share->getUname() . ".html");
+										class_member();//优先调用用户登录类
 										/**
 										 * @var $share \ULib\Share\ShareMarkdown
 										 */
@@ -56,6 +58,7 @@ class Home extends Page{
 									case Share::TYPE_PICTURE_TEXT:
 										header("Content-Type: text/html; charset=utf-8");
 										header("Content-Disposition: inline; filename=" . $share->getUname() . ".html");
+										class_member();//优先调用用户登录类
 										/**
 										 * @var $share \ULib\Share\SharePictureText
 										 */
@@ -68,6 +71,7 @@ class Home extends Page{
 										 */
 										header("Content-Type: text/html; charset=utf-8");
 										header("Content-Disposition: inline; filename=" . $share->getUname() . ".html");
+										class_member();//优先调用用户登录类
 										echo $share->getHtml();
 										$share->activeSet();
 										break;
@@ -82,12 +86,14 @@ class Home extends Page{
 									case Share::TYPE_CODE:
 									case Share::TYPE_MULTI_TEXT:
 										header("Content-Type: text/plain; charset=utf-8");
+										class_member();//优先调用用户登录类
 										echo $share->getPrimaryData();
 										$share->activeSet();
 										break;
 									case Share::TYPE_MARKDOWN:
 										header("Content-Type: text/plain; charset=utf-8");
 										header("Content-Disposition: inline; filename=" . $share->getUname() . ".md");
+										class_member();//优先调用用户登录类
 										echo $share->getPrimaryData();
 										$share->activeSet();
 										break;
@@ -97,6 +103,7 @@ class Home extends Page{
 										/**
 										 * @var $share \ULib\Share\ShareFile
 										 */
+										class_member();//优先调用用户登录类
 										if(($msg = $share->downloadFile()) !== true){
 											Log::write($msg . ":" . $share->getUname());
 											$this->__view("home/server_error.php", ['msg' => $msg]);
@@ -113,6 +120,7 @@ class Home extends Page{
 								switch($share->getShareType()){
 									case Share::TYPE_PICTURE_TEXT:
 										header("Content-Type: text/plain; charset=utf-8");
+										class_member();//优先调用用户登录类
 										/**
 										 * @var $share \ULib\Share\SharePictureText
 										 */
@@ -121,6 +129,7 @@ class Home extends Page{
 										break;
 									case Share::TYPE_CODE:
 										header("Content-Type: text/plain; charset=utf-8");
+										class_member();//优先调用用户登录类
 										echo $share->getPrimaryData();
 										$share->activeSet();
 										break;
@@ -132,6 +141,7 @@ class Home extends Page{
 							case Share::VIEW_SCRIPT:
 								switch($share->getShareType()){
 									case Share::TYPE_CODE:
+										class_member();//优先调用用户登录类
 										/**
 										 * @var $share \ULib\Share\ShareCode
 										 */
@@ -148,14 +158,17 @@ class Home extends Page{
 								//默认查看视图模式
 								switch($share->getShareType()){
 									case Share::TYPE_URL:
+										class_member();//优先调用用户登录类
 										$this->__view("share/url.php", ['share' => $share]);
 										$share->activeSet();
 										break;
 									case Share::TYPE_TEXT:
+										class_member();//优先调用用户登录类
 										$this->__view("share/text.php", ['share' => $share]);
 										$share->activeSet();
 										break;
 									case Share::TYPE_CODE:
+										class_member();//优先调用用户登录类
 										$this->__view("share/code.php", ['share' => $share]);
 										$share->activeSet();
 										break;
@@ -164,6 +177,7 @@ class Home extends Page{
 										$this->__view("share/file.php", ['share' => $share]);
 										break;
 									case Share::TYPE_MARKDOWN:
+										class_member();//优先调用用户登录类
 										$this->__view("share/markdown.php", ['share' => $share]);
 										$share->activeSet();
 										break;
@@ -172,10 +186,12 @@ class Home extends Page{
 										$this->__view("share/picture.php", ['share' => $share]);
 										break;
 									case Share::TYPE_PICTURE_TEXT:
+										class_member();//优先调用用户登录类
 										$this->__view("share/picture-text.php", ['share' => $share]);
 										$share->activeSet();
 										break;
 									case Share::TYPE_MULTI_TEXT:
+										class_member();//优先调用用户登录类
 										$this->__view("share/multi-text.php", ['share' => $share]);
 										$share->activeSet();
 										break;

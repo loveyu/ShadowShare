@@ -9,6 +9,7 @@
 $this->get_header("用户登录");
 ?>
 	<h3 class="text-center">用户登录</h3>
+
 	<div class="register" style="margin: 20px auto;max-width: 500px">
 		<form action="<?php echo get_url('Home', 'login_form', 'post') ?>" method="post">
 			<fieldset>
@@ -35,6 +36,9 @@ $this->get_header("用户登录");
 				<div class="form-group">
 					<button class="btn btn-success" type="submit">登录</button>
 					&nbsp;<a href="<?php echo get_url("Home", 'password_reset') ?>">忘记密码?</a>
+					<?php if(allow_register()): ?>
+						&nbsp;<a href="<?php echo get_url("Home", 'register') ?>">需要注册?</a>
+					<?php endif; ?>
 				</div>
 			</fieldset>
 

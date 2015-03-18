@@ -414,3 +414,45 @@ function get_url_map($index = ''){
 	}
 	return $cfg;
 }
+
+/**
+ * 判断是否允许表单登录
+ * @return bool
+ */
+function allow_form_login(){
+	$cfg = cfg()->get('register', 'login_form');
+	return in_array($cfg, [
+		'open',
+		1,
+		true
+	]);
+}
+
+/**
+ * 是否允许注册
+ * @return bool
+ */
+function allow_register(){
+	$cfg = cfg()->get('register', 'status');
+	return in_array($cfg, [
+		'open',
+		1,
+		true
+	]);
+}
+
+/**
+ * 获取网站标题
+ * @return string
+ */
+function site_title(){
+	return "阅后即隐";
+}
+
+/**
+ * 获取网站描述
+ * @return string
+ */
+function site_desc(){
+	return "分享一小会";
+}

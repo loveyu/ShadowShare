@@ -8,6 +8,7 @@
  */
 $this->get_header("密码重置");
 ?>
+<h3 class="text-center">密码重置</h3>
 	<div class="register" style="margin: 20px auto;max-width: 500px">
 		<form  method="post">
 			<fieldset>

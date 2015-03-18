@@ -14,7 +14,8 @@
 	border: none;
 	border-radius: 25px;
 }
-
+.email_login{
+}
 .main-title a:hover {
 	text-decoration: none;
 }
@@ -208,7 +209,7 @@
 }
 
 .login {
-	margin: 55px 20px;
+	margin: 18px 20px;
 }
 
 #GoogleLoginButton {
@@ -314,4 +315,8 @@ ul.my-list-share .time {
 ul.my-list-share .password > span {
 	color: #bababa;
 	font-style: italic;
+}
+
+#SendEmailCaptcha{
+	cursor: pointer;
 }

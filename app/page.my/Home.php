@@ -44,11 +44,13 @@ class Home extends Page{
 
 	public function logout(){
 		class_member()->logout();
-		redirect([], 'refresh', 302, false);
+		redirect(['Home','login'], 'refresh', 302, false);
+		header("Content-Type: text/plain; charset=utf-8");
+		echo "你已经退出登录。";
 	}
 
 	public function login_form($post = NULL){
-		if(cfg()->get('register', 'login_form') != "open"){
+		if(!allow_form_login()){
 			$this->__load_404();
 			return;
 		}
@@ -82,7 +84,7 @@ class Home extends Page{
 	}
 
 	public function register($post = NULL){
-		if(cfg()->get('register', 'status') != "open"){
+		if(!allow_register()){
 			$this->__load_404();
 			return;
 		}
@@ -118,10 +120,14 @@ class Home extends Page{
 	}
 
 	public function password_reset(){
+		$member = class_member();
+		if($member->getLoginStatus()){
+			$this->__view("home/server_error.php", ['msg' => '当前用户已登录，还需要找回密码么？']);
+			return;
+		}
 		$email = strtolower($this->__req->post('email'));
 		$status = "";
 		if(!empty($email)){
-			$member = class_member();
 			if($member->PwdResetCodeSend($email)){
 				redirect([
 					'Home',
@@ -137,6 +143,11 @@ class Home extends Page{
 	}
 
 	public function password_reset_input($email = NULL){
+		$member = class_member();
+		if($member->getLoginStatus()){
+			$this->__view("home/server_error.php", ['msg' => '当前用户已登录，还需要找回密码么？']);
+			return;
+		}
 		$error = '';
 		if($this->__req->is_post()){
 			$code = $this->__req->post('code');
@@ -155,6 +166,11 @@ class Home extends Page{
 	}
 
 	public function login(){
+		$member = class_member();
+		if($member->getLoginStatus()){
+			$this->__view("home/server_error.php", ['msg' => '当前用户已登录，还需要找回密码么？']);
+			return;
+		}
 		if(func_num_args() > 0){
 			$this->__load_404();
 			return;

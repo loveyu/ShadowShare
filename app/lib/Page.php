@@ -141,9 +141,9 @@ class Page extends \Core\Page{
 
 	public function getTitle(){
 		if(empty($this->title)){
-			return "阅后即隐 - 分享一小会";
+			return site_title() . " - " . site_desc();
 		} else{
-			return $this->title . " | 阅后即隐";
+			return $this->title . " | " . site_title();
 		}
 	}
 

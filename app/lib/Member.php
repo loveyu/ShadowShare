@@ -150,6 +150,8 @@ class Member{
 			$index = hook()->add("Cookie_domain", $this->cookie_domain_callback);
 			class_cookie()->set('token', $this->m_id . "\t" . $token, NOW_TIME + 7 * 86400);
 			hook()->remove("Cookie_domain", $index);
+			//销毁SESSION
+			class_session()->destroy();
 		}
 	}
 

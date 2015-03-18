@@ -6,3 +6,4 @@ app/log/*.log
 test/
 data/file/*/
 config/oauth2.php
+config/all.php

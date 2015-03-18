@@ -16,7 +16,18 @@ $this->get_header("我的分享中心");
 					<span class="count"><?php echo $value_map['count'] ?></span>
 				</a>
 			</div>
-
 		<?php endforeach; ?>
+		<div class="col-xs-3 box-sc-share">
+			<a href="<?php echo get_url('Profile','edit')?>">修改名称<span class="count">*</span></a>
+		</div>
+		<div class="col-xs-3 box-sc-share">
+			<a href="<?php echo get_url('Profile', 'avatar') ?>">编辑头像<span class="count">*</span></a>
+		</div>
+		<div class="col-xs-3 box-sc-share">
+			<a href="<?php echo get_url('Profile','password')?>">修改密码<span class="count">*</span></a>
+		</div>
+		<div class="col-xs-3 box-sc-share">
+			<a href="<?php echo get_url('Profile', 'access_token') ?>">Access Token<span class="count">*</span></a>
+		</div>
 	</div>
 <?php $this->get_footer();

@@ -14,8 +14,10 @@
 	border: none;
 	border-radius: 25px;
 }
-.email_login{
+
+.email_login {
 }
+
 .main-title a:hover {
 	text-decoration: none;
 }
@@ -317,6 +319,20 @@ ul.my-list-share .password > span {
 	font-style: italic;
 }
 
-#SendEmailCaptcha{
+#SendEmailCaptcha {
 	cursor: pointer;
+}
+
+#EditNameForm {
+	max-width: 500px;
+	margin: 30px auto 150px auto;
+}
+
+.footer .love {
+	color: #e6493c;
+	padding-right: 2px;
+}
+
+.my-avatar-edit img {
+	border-radius: 25px;
 }

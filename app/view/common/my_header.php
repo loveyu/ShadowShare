@@ -24,17 +24,18 @@ header("Content-Type: text/html; charset=utf-8");
 <div class="container member">
 	<div id="Header">
 		<h1 class="main-title"><a href="/">我的分享中心</a>
-			<small><a  class="text-danger" href="<?php echo get_url_map('home') ?>">回首页</a></small>
+			<small><a class="text-danger" href="<?php echo get_url_map('home') ?>">回首页</a></small>
 		</h1>
 
 		<div class="login_status">
-			<?php if(class_member()->getLoginStatus()): ?>
-				<a href="<?php echo get_url() ?>" title="用户中心"><img src="<?php echo class_member()->getAvatar(25) ?>"
-																	alt="avatar">&nbsp;haha</a>&nbsp;|&nbsp;<a
-					href="<?php echo get_url([
-						'Home',
-						'logout'
-					]) ?>" title="退出登录">退出</a>
+			<?php $member = class_member();
+			if($member->getLoginStatus()): ?>
+				<a href="<?php echo get_url() ?>" title="用户中心">
+					<img src="<?php echo $member->getAvatar(25) ?>" alt="avatar">&nbsp;<?php
+					echo $member->getName() ?></a>&nbsp;|&nbsp;<a href="<?php echo get_url([
+					'Home',
+					'logout'
+				]) ?>" title="退出登录">退出</a>
 				<script>var IS_LOGIN = true;</script>
 			<?php endif; ?>
 		</div>

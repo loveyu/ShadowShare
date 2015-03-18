@@ -47,6 +47,15 @@ class DaoGoogle{
 	}
 
 	/**
+	 * 通过用户ID查询信息
+	 * @param string $m_id
+	 * @return array|bool
+	 */
+	public function getInfoByMid($m_id){
+		return $this->driver->get("member_google", "*", ['m_id' => $m_id]);
+	}
+
+	/**
 	 * 插入数据到Google用户表
 	 * @param int    $m_id
 	 * @param string $mg_uid

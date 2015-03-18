@@ -28,7 +28,11 @@ return [
 	],
 	'cdn_list' => [
 		'bootstrap' => '//dn-loveyu-libs.qbox.me/bootstrap/3.3.4',
-		'jquery' => '//dn-loveyu-libs.qbox.me/jquery/1.11.2'
+		'jquery' => '//dn-loveyu-libs.qbox.me/jquery/1.11.2',
+		'gravatar' => [
+			'https' => 'https://secure.gravatar.com/avatar',
+			'http' => 'http://1.gravatar.com/avatar'
+		],
 	],
 	'mail_template' => _ViewPath_ . '/mail_template',
 	//邮件模板视图

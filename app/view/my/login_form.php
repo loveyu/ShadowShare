@@ -14,7 +14,7 @@ $this->get_header("用户登录");
 		<form action="<?php echo get_url('Home', 'login_form', 'post') ?>" method="post">
 			<fieldset>
 				<?php if(!empty($__error)): ?>
-					<p class="well well-sm text-danger"><?php echo $__error ?></p>
+					<p class="alert alert-danger"><?php echo $__error ?></p>
 				<?php endif; ?>
 				<div class="form-group">
 					<label class="control-label sr-only" for="InputEmail">邮箱 : </label>

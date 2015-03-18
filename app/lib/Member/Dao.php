@@ -85,6 +85,16 @@ class Dao{
 	}
 
 	/**
+	 * 通过ID更新数据
+	 * @param int $id
+	 * @param array $data
+	 * @return int
+	 */
+	public function update_by_id($id, $data){
+		return $this->driver->update("member", $data, ['m_id' => intval($id)]);
+	}
+
+	/**
 	 * 更新用户Token
 	 * @param int    $m_id
 	 * @param string $m_login_token

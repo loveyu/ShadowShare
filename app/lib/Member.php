@@ -9,6 +9,7 @@ namespace ULib;
 
 
 use ULib\Member\Dao;
+use ULib\Member\DaoGoogle;
 
 class Member{
 	protected $dao;
@@ -131,6 +132,37 @@ class Member{
 		return true;
 	}
 
+	/**
+	 * 发送注册邮件
+	 * @param string $email
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function SendRegisterCode($email){
+		lib()->load('Member/Dao');
+		$dao = new Dao();
+		if($dao->has_email($email)){
+			$this->_error = "邮箱已被注册";
+			return false;
+		}
+		$session = class_session();
+		$code = salt(15);
+		$session->set("EmailRegisterCode", [
+			'code' => $code,
+			'email' => $email
+		]);
+		lib()->load('MailTemplate');
+		$mail = new MailTemplate("register.html");
+		$mail->setValues(['code' => htmlspecialchars($code)]);
+		try{
+			$mail->mailSend($email, $email);
+		} catch(\Exception $ex){
+			$this->_error = "邮件发送失败";
+			return false;
+		}
+		return true;
+	}
+
 	public function PwdReset($email, $code, $pwd_hash){
 		$data = class_session()->get('password_reset');
 		if(!isset($data['email']) || $data['email'] != $email || $data['code'] != $code){
@@ -204,6 +236,57 @@ class Member{
 	}
 
 	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	public function setName($name){
+		$name = trim($name);
+		if(empty($name)){
+			$this->_error = "名称不能为空";
+			return false;
+		}
+		if($name == $this->m_name){
+			$this->_error = "无修改";
+			return false;
+		}
+		if($this->getDao()->update_by_id($this->getUid(), ['m_name' => $name]) == 1){
+			$this->m_name = $name;
+			$this->resetMemberInfo();
+			return true;
+		}
+		$this->_error = "更新失败";
+		return false;
+	}
+
+	/**
+	 * 更新新旧密码，参数为HASH值
+	 * @param string $old_pwd
+	 * @param string $new_pwd
+	 * @return bool
+	 */
+	public function setPassword($old_pwd, $new_pwd){
+		$data = $this->getDao()->get_base_info($this->m_id);
+		if(!isset($data['m_email'])){
+			$this->_error = "未找到当前用户";
+			return false;
+		}
+		if(salt_hash($old_pwd, $data['m_salt']) !== $data['m_password']){
+			$this->_error = "原密码不正确";
+			return false;
+		}
+		$salt = salt(12);
+		if($this->getDao()->update_by_id($this->m_id, [
+				'm_salt' => $salt,
+				'm_password' => salt_hash($new_pwd, $salt)
+			]) === 1
+		){
+			return true;
+		}
+		$this->_error = "更新失败";
+		return false;
+	}
+
+	/**
 	 * 开始自动登录，设置完成后自动跳转
 	 * @param int    $login_id
 	 * @param string $type
@@ -228,6 +311,22 @@ class Member{
 		$this->setToken();//设置Token
 		$this->status = true;
 		$this->loginRecord('oauth2', $type);
+	}
+
+	/**
+	 * 重置用户信息在Session中的内容
+	 */
+	private function resetMemberInfo(){
+		$member = [];
+		foreach([
+			'm_id',
+			'm_name',
+			'm_email',
+			'm_avatar'
+		] as $v){
+			$member[$v] = $this->$v;
+		}
+		class_session()->set('member', $member);
 	}
 
 	/**
@@ -337,10 +436,107 @@ class Member{
 		switch($type){
 			case "google":
 				return $value . "?sz=" . $size;
+			case "custom":
+				return $value;
+			case "gravatar":
+				return $this->getGravatar($size);
 			case "default":
 				return get_url_map("my") . "Home/avatar_rand?size=" . $size;
 		}
 		return $value;
 	}
 
+	/**
+	 * 返回头像解析的参数
+	 * @return array
+	 */
+	public function parseAvatarParam(){
+		$x = explode("\t", $this->m_avatar);
+		return [
+			'type' => $x[0],
+			'value' => $x[1]
+		];
+	}
+
+	/**
+	 * 设置当前用户的头像
+	 * @param string $type
+	 * @param string $value
+	 * @return bool
+	 */
+	public function setAvatar($type, $value){
+		$type = trim(strtolower($type));
+		$data = "";
+		switch($type){
+			case "default":
+			case "gravatar":
+				$data = $type . "\t" . NOW_TIME;
+				break;
+			case "google":
+				$google = $this->getAvatarByGoogle();
+				if(empty($google)){
+					$this->_error = "Google 头像不存在";
+					return false;
+				}
+				$data = "google\t" . $google;
+				break;
+			case "custom":
+				if(!filter_var($value, FILTER_VALIDATE_URL) && !filter_var("http:" . $value, FILTER_VALIDATE_URL)){
+					$this->_error = "自定义地址不正确";
+					return false;
+				}
+				$data = "custom\t" . htmlspecialchars($value);
+				break;
+			default:
+				$this->_error = "未知头像类型";
+				return false;
+		}
+		$flag = $this->getDao()->update_by_id($this->m_id, ['m_avatar' => $data]) == 1;
+		if(!$flag){
+			$this->_error = "未修改";
+		} else{
+			$this->m_avatar = $data;
+		}
+		return $flag;
+	}
+
+	/**
+	 * 获取用户的头像地址
+	 * @return bool
+	 */
+	public function getAvatarByGoogle(){
+		lib()->load('Member/DaoGoogle');
+		$dao = new DaoGoogle();
+		$info = $dao->getInfoByMid($this->m_id);
+		if(!isset($info['mg_avatar'])){
+			return false;
+		}
+		return $info['mg_avatar'];
+	}
+
+	/**
+	 * 获取用户的Gravatar头像
+	 * @param int    $size
+	 * @param string $email
+	 * @return string
+	 */
+	public function getGravatar($size = 50, $email = ''){
+		if(empty($email)){
+			$email = $this->getEmail();
+		}
+		$sid = md5($email);
+		$url = [
+			'https' => 'https://secure.gravatar.com/avatar',
+			'http' => 'http://1.gravatar.com/avatar'
+		];
+		$cdn = cfg()->get('cdn_list', 'gravatar');
+		if(is_array($cdn)){
+			$url = array_merge($url, $cdn);
+		}
+		if(is_ssl()){
+			return $url['https'] . "/" . $sid . "?s=" . $size;
+		} else{
+			return $url['http'] . "/" . $sid . "?s=" . $size;
+		}
+	}
 }

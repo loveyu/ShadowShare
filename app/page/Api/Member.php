@@ -23,6 +23,9 @@ class Member extends RestApi{
 	 * 查询当前用户的登录信息
 	 */
 	public function loginInfo(){
+		if(!$this->_run_check()){
+			return;
+		}
 		$member = class_member();
 		if(!$member->getLoginStatus()){
 			$this->_set_status(false, 5001, '当前用户未登陆');
@@ -41,6 +44,9 @@ class Member extends RestApi{
 	 * 未被注册返回TRUE
 	 */
 	public function emailRegisterCheck(){
+		if(!$this->_run_check()){
+			return;
+		}
 		$email = $this->__req->req('email');
 		if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 			$this->_set_status(false, 5011, "邮箱地址不合法");
@@ -59,32 +65,18 @@ class Member extends RestApi{
 	 * 发送邮箱注册验证码
 	 */
 	public function sendEmailRegisterCode(){
+		if(!$this->_run_check()){
+			return;
+		}
 		$email = trim(strtolower($this->__req->req('email')));
 		if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 			$this->_set_status(false, 5011, "邮箱地址不合法");
 			return;
 		}
-		lib()->load('Member/Dao');
-		$dao = new Dao();
-		if($dao->has_email($email)){
-			$this->_set_status(false, 5012, "邮箱已被注册");
-			return;
+		if(!class_member()->SendRegisterCode($email)){
+			$this->_set_status(false, 5012, class_member()->getError());
+		} else{
+			$this->_set_status(true, 0, "验证码已发送");
 		}
-		$session = class_session();
-		$code = salt(15);
-		$session->set("EmailRegisterCode", [
-			'code' => $code,
-			'email' => $email
-		]);
-		$this->__lib->load('MailTemplate');
-		$mail = new MailTemplate("register.html");
-		$mail->setValues(['code' => htmlspecialchars($code)]);
-		try{
-			$mail->mailSend($email, $email);
-		} catch(\Exception $ex){
-			$this->_set_status(false, 5013, "邮件发送失败");
-			return;
-		}
-		$this->_set_status(true, 0, "验证码已发送");
 	}
 }

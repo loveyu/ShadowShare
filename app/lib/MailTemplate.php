@@ -187,6 +187,7 @@ class MailTemplate{
 		if(!$this->is_set_values){
 			$this->setValues([]);
 		}
+		ob_start();
 		try{
 			c_lib()->load('mail');
 			$mail = new Mail();
@@ -202,7 +203,9 @@ class MailTemplate{
 				$mail->AltBody = $textContent;
 			}
 			$mail->send();
+			ob_clean();
 		} catch(\Exception $ex){
+			ob_clean();
 			throw new \Exception(_("Mail Send Error.") . debug(" :" . $ex->getMessage()));
 		}
 	}

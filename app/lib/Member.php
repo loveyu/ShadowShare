@@ -119,6 +119,15 @@ class Member{
 			'code' => md5(salt())
 		];
 		class_session()->set('password_reset', $data);
+		lib()->load('MailTemplate');
+		$mail = new MailTemplate("register.html");
+		$mail->setValues(['code' => htmlspecialchars($data['code'])]);
+		try{
+			$mail->mailSend($email, $email);
+		} catch(\Exception $ex){
+			$this->_error = "邮件发送失败";
+			return false;
+		}
 		return true;
 	}
 

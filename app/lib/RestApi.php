@@ -7,6 +7,8 @@
 
 namespace ULib;
 
+use Core\Log;
+
 /**
  * 基本API设计
  * Class RestApi
@@ -54,6 +56,8 @@ class RestApi extends \Core\Page{
 				$this->result['code'] = -2;
 			}
 		}
+		//开始准备异常数据
+		ob_start();
 	}
 
 	/**
@@ -119,6 +123,13 @@ class RestApi extends \Core\Page{
 	 * 对象销毁并输出数据
 	 */
 	function __destruct(){
+		//异常数据获取
+		$error_content = NULL;
+		if(ob_get_length()){
+			//刷新缓冲区
+			$error_content = @ob_get_contents();
+			@ob_clean();
+		}
 		if(!$this->result['status'] && $this->result['code'] < 0 && $this->result['msg'] === NULL){
 			$this->result['msg'] = $this->_code_msg($this->result['code']);
 		}
@@ -141,6 +152,9 @@ class RestApi extends \Core\Page{
 				header("Content-Type: application/json; charset=utf-8");
 				echo json_encode($this->result, $this->cfg['json_option']);
 				break;
+		}
+		if(!empty($error_content)){
+			Log::write("API ERROR OUTPUT:\n" . $error_content, Log::NOTICE);
 		}
 	}
 

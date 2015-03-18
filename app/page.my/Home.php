@@ -44,7 +44,10 @@ class Home extends Page{
 
 	public function logout(){
 		class_member()->logout();
-		redirect(['Home','login'], 'refresh', 302, false);
+		redirect([
+			'Home',
+			'login'
+		], 'refresh', 302, false);
 		header("Content-Type: text/plain; charset=utf-8");
 		echo "你已经退出登录。";
 	}
@@ -106,7 +109,7 @@ class Home extends Page{
 				if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 					$error = "邮箱格式有误，请检查";
 				} else{
-					if(($id = $member->registerByPassword($name, $email, _md5($password))) > 0){
+					if(($id = $member->registerByPassword($name, $email, _md5($password), trim($this->__req->post('captcha')))) > 0){
 						$member->oauth2login($id, "register");
 						redirect(get_url(), "refresh", 302, false);//重新跳转到用户首页
 						return;

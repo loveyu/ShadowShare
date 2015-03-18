@@ -59,7 +59,7 @@ class Member extends RestApi{
 	 * 发送邮箱注册验证码
 	 */
 	public function sendEmailRegisterCode(){
-		$email = $this->__req->req('email');
+		$email = trim(strtolower($this->__req->req('email')));
 		if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 			$this->_set_status(false, 5011, "邮箱地址不合法");
 			return;
@@ -72,10 +72,13 @@ class Member extends RestApi{
 		}
 		$session = class_session();
 		$code = salt(15);
-		$session->set("EmailRegisterCode", $code);
+		$session->set("EmailRegisterCode", [
+			'code' => $code,
+			'email' => $email
+		]);
 		$this->__lib->load('MailTemplate');
 		$mail = new MailTemplate("register.html");
-		$mail->setValues(['code' => $code]);
+		$mail->setValues(['code' => htmlspecialchars($code)]);
 		try{
 			$mail->mailSend($email, $email);
 		} catch(\Exception $ex){

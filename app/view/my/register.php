@@ -61,37 +61,62 @@ $this->get_header("用户注册");
 		jQuery(function ($) {
 			var has_e_error = false;
 			var email_success = false;
-			var has_p_error = false;
+			var sending = false;
 			var send_email_captcha = $("#SendEmailCaptcha");
+			var input_email = $("#InputEmail");
 			var email_change = function () {
 				var email = $(this).val();
 				$.getJSON(URL_MAP.api + "Member/emailRegisterCheck", {email: email}, function (result) {
 					if (result.status) {
 						has_e_error = false;
 						email_success = true;
-						$("#ErrorBox").html("");
+						$("#MyEmailError").remove();
+						if ($("#ErrorOutput").html() == "") {
+							$("#ErrorOutput").remove();
+						}
 					} else {
 						has_e_error = true;
 						email_success = false;
 						if ($("#ErrorOutput").length < 1) {
 							$("#ErrorBox").html('<p id="ErrorOutput" class="well well-sm text-danger"></p>');
 						}
-						$("#ErrorOutput").html(result.msg);
+						$("#ErrorOutput").append("<span id='MyEmailError'>" + result.msg + "<span>");
 					}
 				});
 			};
 			var send_email = function () {
+				if (sending)return;//邮件发送中
 				if (!email_success) {
 					alert("邮箱未验证");
 					return false;
 				}
 				var email = $("#InputEmail").val();
-				$.getJSON(URL_MAP.api + "Member/sendEmailRegisterCode", {email: email}, function (result) {
-					console.log(result);
+				sending = true;
+				$(this).html("邮件发送中");
+				var obj = this;
+				$.ajax({
+					url: URL_MAP.api + "Member/sendEmailRegisterCode",
+					dataType: "json",
+					data: {email: email},
+					xhrFields: {
+						withCredentials: true
+					},
+					success: function (result) {
+						if (result.status) {
+							$(obj).html("邮件已发送，点击重发！").removeClass("label-danger").addClass("label-success");
+						} else {
+							$(obj).html("邮件发送失败，点击重发！").removeClass("label-success").addClass("label-danger");
+							alert(result.msg);
+						}
+						sending = false;
+					}
 				});
 				return false;
 			};
-			$("#InputEmail").blur(email_change);
+			input_email.blur(email_change);
+			if (input_email.val() != "") {
+				input_email.trigger('blur')
+			}
 			send_email_captcha.click(send_email);
 
 		});

@@ -256,11 +256,25 @@ class Member{
 	 * @param string $name
 	 * @param string $email
 	 * @param string $password 经过HASH之后的密码值
+	 * @param string $code     邮箱验证码
 	 * @return bool|int
 	 */
-	public function registerByPassword($name, $email, $password){
+	public function registerByPassword($name, $email, $password, $code){
 		if($this->getDao()->has_email($email)){
 			$this->_error = "当前邮箱已经被注册";
+			return false;
+		}
+		$captcha = class_session()->get('EmailRegisterCode');
+		if(!isset($captcha['email']) || !isset($captcha['code'])){
+			$this->_error = "邮箱验证码未设置，请重新发送验证码";
+			return false;
+		}
+		if($captcha['email'] != $email){
+			$this->_error = "当前邮箱已变更，请重新发送邮件";
+			return false;
+		}
+		if($captcha['code'] != $code){
+			$this->_error = "验证码无效，或已过期";
 			return false;
 		}
 		$salt = salt(12);
@@ -315,7 +329,7 @@ class Member{
 			case "google":
 				return $value . "?sz=" . $size;
 			case "default":
-				return get_url_map("my")."Home/avatar_rand?size=" . $size;
+				return get_url_map("my") . "Home/avatar_rand?size=" . $size;
 		}
 		return $value;
 	}

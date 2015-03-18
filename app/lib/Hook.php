@@ -31,13 +31,11 @@ class Hook{
 			'result'
 		]);
 		switch($_SERVER['HTTP_HOST']){
-			case "changda.club":
-			case "cd.loc":
+			case _HOST_ROOT_:
 				$router->add_preg("|^([0-9A-Za-z]{4,})$|", 'Home/share/[1]');
 				$router->add_preg("|^add/([a-z-]{3,})$|", 'Home/add/[1]');
 				break;
-			case "my.cd.loc":
-			case "my.changda.club":
+			case _HOST_MY_:
 				$router->add_preg("|^list/([a-z-]{3,})$|", 'MyList/select/[1]');
 				break;
 		}

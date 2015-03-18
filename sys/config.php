@@ -76,22 +76,33 @@ define("_Language_", _AppPath_ . "/language");
  */
 define("_Cache_", _AppPath_ . "/cache");
 
-if(isset($_SERVER['HTTP_HOST'])){
-	switch(strtolower($_SERVER['HTTP_HOST'])){
-		case "my.changda.club":
-		case "my.cd.loc":
-			$page_path = "/page.my";
-			break;
-		case "changda.club":
-		case "cd.loc":
-			$page_path = "/page";
-			break;
-		default:
-			$page_path = "/page.error";
-			break;
-	}
-} else{
-	$page_path = "/page";
+
+if(!isset($_SERVER['HTTP_HOST'])){
+	$_SERVER['HTTP_HOST'] = "";
+}
+preg_match("/[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/", $_SERVER['HTTP_HOST'], $match);
+
+/**
+ * 主要的访问域名
+ */
+define("_HOST_ROOT_", isset($match[0]) ? $match[0] : $_SERVER['HTTP_HOST']);
+unset($match);
+
+/**
+ * 用户中心访问域名
+ */
+define("_HOST_MY_", "my." . _HOST_ROOT_);
+
+switch(strtolower($_SERVER['HTTP_HOST'])){
+	case _HOST_ROOT_:
+		$page_path = "/page.my";
+		break;
+	case _HOST_MY_:
+		$page_path = "/page";
+		break;
+	default:
+		$page_path = "/page.error";
+		break;
 }
 /**
  * 页面路径

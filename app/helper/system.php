@@ -186,7 +186,7 @@ function get_top_domain($top_length = 2){
  * @param callback     $value_callback
  * @return array
  */
-function list2keymapSK($list, $value, $value_callback){
+function list2keymapSK($list, $value, $value_callback = NULL){
 	if(!is_array($list)){
 		return [];
 	}

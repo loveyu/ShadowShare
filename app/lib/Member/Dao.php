@@ -67,6 +67,15 @@ class Dao{
 
 	/**
 	 * 获取最近的一条记录
+	 * @param int $access_token
+	 * @return array|bool
+	 */
+	public function get_base_info_by_access_token($access_token){
+		return $this->driver->get("member", '*', ['m_access_token' => $access_token]);
+	}
+
+	/**
+	 * 获取最近的一条记录
 	 * @param int $email
 	 * @return array|bool
 	 */
@@ -86,7 +95,7 @@ class Dao{
 
 	/**
 	 * 通过ID更新数据
-	 * @param int $id
+	 * @param int   $id
 	 * @param array $data
 	 * @return int
 	 */

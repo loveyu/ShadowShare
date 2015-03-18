@@ -32,7 +32,14 @@ class Member{
 		$this->autoLogin();
 	}
 
+	/**
+	 * 设置自动登录
+	 */
 	private function autoLogin(){
+		if($this->access_token_login()){
+			$this->status = true;
+			return;
+		}
 		$session = class_session();
 		$member = $session->get('member');
 		if(isset($member['m_id'])){
@@ -83,6 +90,42 @@ class Member{
 				$this->setToken();
 			}
 		}
+	}
+
+	/**
+	 * 使用Access Token 登录，如果成功登录则不使用其他登录
+	 * @return bool 登录成功返回True，失败返回False
+	 */
+	private function access_token_login(){
+		//检测是否为API页面
+		$u = u()->getUriInfo()->getUrlList();
+		if(!isset($u[0]) || $u[0] != "Api"){
+			return false;
+		}
+
+		$token = req()->get('access_token');
+		$ex = explode(".", $token);
+		if(count($ex) !== 2){
+			return false;
+		}
+		list($info, $time) = $ex;
+		if(strlen(base64_decode($info)) !== 20 || strlen($time) !== 10){
+			//参数检查错误
+			return false;
+		}
+		$data = $this->getDao()->get_base_info_by_access_token($token);
+		if(!isset($data['m_id'])){
+			return false;
+		}
+		foreach([
+			'm_id',
+			'm_name',
+			'm_email',
+			'm_avatar'
+		] as $v){
+			$this->$v = $data[$v];
+		}
+		return true;
 	}
 
 	/**
@@ -401,6 +444,31 @@ class Member{
 	 */
 	public function getError(){
 		return $this->_error;
+	}
+
+	/**
+	 * 获取当前的AccessToken
+	 * @return bool
+	 */
+	public function getAccessToken(){
+		$info = $this->getDao()->get_base_info($this->m_id);
+		if($info['m_access_token'] === NULL || empty($info['m_access_token'])){
+			return $this->resetAccessToken();
+		} else{
+			return $info['m_access_token'];
+		}
+	}
+
+	/**
+	 * 重置AccessToken并返回
+	 * @return string
+	 */
+	public function resetAccessToken(){
+		$access_token = base64_encode(sha1($this->m_id . $this->m_email . salt(12), true)) . "." . NOW_TIME;
+		if($this->getDao()->update_by_id($this->m_id, ['m_access_token' => $access_token]) != 1){
+			return false;
+		}
+		return $access_token;
 	}
 
 	/**

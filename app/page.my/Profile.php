@@ -85,6 +85,12 @@ class Profile extends Page{
 		if(!class_member()->getLoginStatus()){
 			redirect('Home/login', 'refresh', 302, false);
 		}
-
+		$reset = $this->__req->post('reset');
+		if($reset === "true"){
+			$access_token = class_member()->resetAccessToken();
+		} else{
+			$access_token = class_member()->getAccessToken();
+		}
+		$this->__view("profile/access_token.php", compact('access_token'));
 	}
 }

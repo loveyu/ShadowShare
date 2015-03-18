@@ -79,4 +79,12 @@ class Member extends RestApi{
 			$this->_set_status(true, 0, "验证码已发送");
 		}
 	}
+
+	public function test(){
+		if(!$this->_run_check()){
+			return;
+		}
+		$this->_set_status(true, 0);
+		$this->_set_data(json_encode(class_member()->getLoginStatus()));
+	}
 }

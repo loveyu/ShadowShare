@@ -34,5 +34,8 @@ $this->get_header("修改密码");
 		<div class="form-group">
 			<button type="submit" class="btn btn-warning">确认修改</button>
 		</div>
+		<div class="form-group">
+			<p class="help-block"><strong>提示 : </strong>如果使用第三方登录，如果需要使用密码，请使用密码找回功能。</p>
+		</div>
 	</form>
 <?php $this->get_footer();

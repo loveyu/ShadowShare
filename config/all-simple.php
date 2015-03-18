@@ -26,8 +26,24 @@ return [
 					   'my' => 'my.%ROOT%'
 					   //用户中心的域名
 	],
-//	'cdn_list' => [
-//		'bootstrap' => '//dn-loveyu-libs.qbox.me/bootstrap/3.3.4',
-//		'jquery' => '//dn-loveyu-libs.qbox.me/jquery/1.11.2'
-//	],
+	'cdn_list' => [
+		'bootstrap' => '//dn-loveyu-libs.qbox.me/bootstrap/3.3.4',
+		'jquery' => '//dn-loveyu-libs.qbox.me/jquery/1.11.2'
+	],
+	'mail_template' => _ViewPath_ . '/mail_template',
+	//邮件模板视图
+	'mail' => [
+		//邮件配置设置，参考PHPMailer
+		'Mailer' => 'smtp',
+		'Host' => 'smtp.exmail.qq.com',
+		'SMTPAuth' => true,
+		'Username' => 'share@xxx.xxx',
+		'Password' => 'xxx',
+		'From' => 'share@xxx.xxx',
+		'FromName' => 'share',
+		'Sender' => 'share@xxx.xxx',
+		'XMailer' => 'Loveyu Mailer',
+		'CharSet' => 'utf-8',
+		"Encoding" => 'base64',
+	],
 ];

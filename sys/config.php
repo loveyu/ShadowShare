@@ -95,10 +95,10 @@ define("_HOST_MY_", "my." . _HOST_ROOT_);
 
 switch(strtolower($_SERVER['HTTP_HOST'])){
 	case _HOST_ROOT_:
-		$page_path = "/page.my";
+		$page_path = "/page";
 		break;
 	case _HOST_MY_:
-		$page_path = "/page";
+		$page_path = "/page.my";
 		break;
 	default:
 		$page_path = "/page.error";

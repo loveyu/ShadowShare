@@ -63,7 +63,7 @@ $this->get_header("分享你的图片和你希望写下的内容");
 				event.preventDefault();
 			}
 			function select_file(file) {
-				if (!file.hasOwnProperty('name')) {
+				if (typeof file['name']=="undefined") {
 					alert("请选择正确的图片");
 					return;
 				}

@@ -35,7 +35,7 @@ $this->get_header("分享一张图片");
 				event.preventDefault();
 			}
 			function select_file(file) {
-				if (!file.hasOwnProperty('name')) {
+				if (typeof file['name']=="undefined") {
 					alert("请选择正确的图片");
 					return;
 				}

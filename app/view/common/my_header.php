@@ -8,7 +8,7 @@ header("Content-Type: text/html; charset=utf-8");
 <head>
 	<meta charset="UTF-8">
 	<title><?php echo $this->getTitle() ?></title>
-	<link rel="icon" href="<?php echo $this->get_asset('favicon.ico') ?>">
+	<link rel="icon" href="/favicon.ico">
 	<link rel="stylesheet" href="<?php echo $this->get_bootstrap('css/bootstrap.min.css'); ?>"/>
 	<link rel="stylesheet" href="<?php echo $this->get_bootstrap('css/bootstrap-theme.min.css'); ?>"/>
 	<script type="text/javascript" src="<?php echo $this->get_cdn('jquery.min.js', 'jquery', 'js/jquery.js'); ?>"></script>

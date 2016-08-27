@@ -21,7 +21,7 @@ define("AVATAR_SIZE", (isset($_GET['size']) && $_GET['size'] > 10) ? $_GET['size
 define("AVATAR__spriteZ", 128);
 
 if(!function_exists('imageantialias')){
-	function imageantialias(){
+	function imageantialias($resource,$param){
 
 	}
 }

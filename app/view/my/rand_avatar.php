@@ -32,7 +32,9 @@ define("AVATAR__spriteZ", 128);
 function getsprite($shape, $R, $G, $B, $rotation){
 	$spriteZ = AVATAR__spriteZ;
 	$sprite = imagecreatetruecolor($spriteZ, $spriteZ);
-	imageantialias($sprite, true);
+	if(function_exists('imageantialias')){
+		imageantialias($sprite, true);
+	}
 	$fg = imagecolorallocate($sprite, $R, $G, $B);
 	$bg = imagecolorallocate($sprite, 255, 255, 255);
 	imagefilledrectangle($sprite, 0, 0, $spriteZ, $spriteZ, $bg);

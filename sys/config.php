@@ -80,7 +80,7 @@ define("_Cache_", _AppPath_ . "/cache");
 if(!isset($_SERVER['HTTP_HOST'])){
 	$_SERVER['HTTP_HOST'] = "";
 }
-preg_match("/[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/", $_SERVER['HTTP_HOST'], $match);
+preg_match("/[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/", $_SERVER['HTTP_HOST'], $match);
 
 /**
  * 主要的访问域名

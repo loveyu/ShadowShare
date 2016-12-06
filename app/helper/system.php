@@ -396,8 +396,8 @@ function get_url_map($index = ''){
 		$cfg2 = cfg()->get('url_map_host');
 		$cfg = array_merge($cfg, is_array($cfg2) ? $cfg2 : []);
 		if(empty($cfg['root'])){
-			if(preg_match("/[a-zA-Z0-9-]+\\.[a-zA-Z0-9-]+$/", u()->getUriInfo()->getHttpHost(), $match) == 1){
-				$cfg['root'] = $match[0];
+			if(defined('_HOST_ROOT_')){
+				$cfg['root'] = _HOST_ROOT_;
 			} else{
 				$cfg['root'] = u()->getUriInfo()->getHttpHost();
 			}
